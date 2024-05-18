@@ -3,6 +3,9 @@ name: PHP Linting (Overtrue)
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
 # This is how to reuse this workflow:
 #  call-workflow:

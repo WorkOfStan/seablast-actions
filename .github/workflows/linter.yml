@@ -25,6 +25,9 @@ on:
       - 'notest/**'
   workflow_call:
 
+permissions:
+  contents: read
+
 ###############
 # Set the Job #
 ###############
