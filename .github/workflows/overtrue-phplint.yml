@@ -1,14 +1,6 @@
 ---
 name: PHP Linting (Overtrue)
 on:
-  push:
-    branches-ignore:
-      # notest branches to ignore testing of partial online commits
-      - 'notest/**'
-  pull_request:
-    branches-ignore:
-      # notest branches to ignore testing of partial online commits
-      - 'notest/**'
   workflow_call:
 
 jobs:
