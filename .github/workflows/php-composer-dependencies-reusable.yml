@@ -1,0 +1,140 @@
+---
+name: PHP Composer + PHPUnit + PHPStan
+
+on:
+  workflow_call:
+    inputs:
+      php-version:
+        required: true
+        type: string
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.operating-system }}
+    # Limit the running time
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        operating-system:
+          - "ubuntu-latest"
+        php-version: ${{ fromJson(inputs.php-version) }}
+        # If the bug https://bugs.php.net/bug.php?id=73803 materializes, then remove 7.1 from php-version list above, as
+        # ZipArchive class has public properties, that are not visible via reflection in PHP/7.1.
+        # Therefore using tools like PHPStan generates error: Access to an undefined property ZipArchive::$numFiles. in class\MyAdminProcess
+
+    env:
+      # same as phinx.dist.yml-testing
+      DB_DATABASE: testing_db
+      DB_USER: root
+      DB_PASSWORD: 'root'
+      #DB_HOST: localhost
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Install PHP ${{ matrix.php-version }} Test on ${{ runner.os }}"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+          tools: composer:v2, phpstan
+          # Note: phpstan call fails for PHP<7.1
+          # coverage none turns off Xdebug as in PHP 5.6,7.0 it would change (format) var_dump output
+          coverage: none
+        env:
+          # fixes Error: Could not authenticate against github.com
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Database tests should fire up only if phinx.dist.yml is present
+      - name: Check database config file existence
+        id: check_files_database
+        uses: andstor/file-existence-action@v2
+        with:
+          files: "phinx.dist.yml"
+
+      # PHPUnit tests should fire up only if conf/phpunit-github.xml is present
+      - name: Check PHPUnit config file existence
+        id: check_files_phpunit
+        uses: andstor/file-existence-action@v2
+        with:
+          files: "./conf/phpunit-github.xml"
+
+      # Copy config.local.dist.php only if present
+      - name: Check existence of specimen for config.local.php
+        id: check_files_configlocaldist
+        uses: andstor/file-existence-action@v2
+        with:
+          files: "./conf/config.local.dist.php"
+
+      - name: "MySQL db ${{ env.DB_DATABASE }}"
+        if: steps.check_files_database.outputs.files_exists == 'true'
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -V
+          mysql -e "STATUS" -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+          mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+          mysql -e 'SHOW DATABASES;' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+
+      # https://github.com/actions/cache
+      # A repository can have up to 10 GB of caches. Once the 10 GB limit is reached, older caches will be evicted based on when the cache was last accessed.
+      # Caches that are not accessed within the last week will also be evicted.
+      - name: Cache composer dependencies
+        uses: actions/cache@v3
+        id: vendor-cache
+        with:
+          # path to Checkout working directory is /home/runner/work/repo-name/repo-name , so just add /vendor/
+          path: ${{ github.workspace }}/vendor/
+          # Use composer.json for key, if composer.lock is not committed.
+          key: ${{ runner.os }}-PHP${{ matrix.php-version }}-vendor-${{ hashFiles('**/composer.json') }}
+          # key: ${{ runner.os }}-PHP${{ matrix.php-version }}-vendor-${{ hashFiles('**/composer.lock') }}
+          #restore-keys: ${{ runner.os }}-PHP${{ matrix.php-version }}-vendor-
+
+      - name: Validate composer.json and composer.lock
+        if: ${{ steps.vendor-cache.outputs.cache-hit != 'true' }}
+        run: composer validate
+
+      - name: Install no-dev dependencies
+        if: ${{ steps.vendor-cache.outputs.cache-hit != 'true' }}
+        run: composer update --no-dev --prefer-dist --no-progress
+
+      # to fix `Constant DB_USERNAME not found.` etc not only for phpstan but also for phpunit tests
+      - name: Copy local config files
+        if: steps.check_files_configlocaldist.outputs.files_exists == 'true'
+        run: cp -p conf/config.local.dist.php conf/config.local.php
+
+      - name: Copy local testing database settings
+        if: steps.check_files_database.outputs.files_exists == 'true'
+        run: cp -p phinx.dist.yml phinx.yml
+
+      - name: Phinx migration - migrate
+        if: ${{ matrix.php-version >= '7.1' && steps.check_files_database.outputs.files_exists == 'true' }} #PHP/5.6 has auth problem with MySQL/8
+        run: "./vendor/bin/phinx migrate -e testing"
+
+      - name: Install dependencies
+        if: ${{ steps.vendor-cache.outputs.cache-hit != 'true' }}
+        run: composer update --prefer-dist --no-progress
+
+      # PHPunit is installed anyway, so it doesn't make sense to use tools: phpunit
+      # Note `sudo /etc/init.d/apache2 start` uses `/etc/apache2/sites-enabled/000-default.conf` where DocumentRoot = `/var/www/html` but without PHP
+      # Note: if there are tests without need of MySQL, adapt PHPUnit config file conf/phpunit-github.xml accordingly (perhaps without PHP ^7.1 condition)
+      - name: "PHPUnit tests with MySQL"
+        if: ${{ matrix.php-version >= '7.1' && steps.check_files_phpunit.outputs.files_exists == 'true' }}
+        run: ./vendor/bin/phpunit -c ./conf/phpunit-github.xml
+
+      # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
+      # Docs: https://getcomposer.org/doc/articles/scripts.md
+
+      # - name: Run test suite
+      #   run: composer run-script test
+
+      # PHPStan works for PHP/7.1+ so it can't even be in composer.json (as ^5.6|^7.0 is supported)
+      - name: "Composer phpstan-webmozart-assert"
+        if: ${{ matrix.php-version >= '7.1' && steps.vendor-cache.outputs.cache-hit != 'true' }}
+        run: |
+          composer require --dev phpstan/phpstan-webmozart-assert --prefer-dist --no-progress
+          #todo return when rector ready for phpstan:1.0#composer require --dev rector/rector --prefer-dist --no-progress
+      - name: "PHPStan webmozart-assert"
+        if: ${{ matrix.php-version >= '7.1' }}
+        run: phpstan --configuration=conf/phpstan.webmozart-assert.neon analyse --no-interaction --no-progress .
