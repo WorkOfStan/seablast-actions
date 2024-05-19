@@ -60,16 +60,11 @@ jobs:
           DEFAULT_BRANCH: WorkOfStan-patch-1
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml
-          # Environment variable, which should point to your `.shfmt` file relative to the root of your repository.
-          SHELL_SHFMT_FILE_NAME: .shfmt
+          #SHELL_SHFMT_FILE_NAME: .shfmt
           VALIDATE_JAVASCRIPT_STANDARD: false
           VALIDATE_ANSIBLE: false
-          # 240519 does VALIDATE_BASH: true make difference?
-          #VALIDATE_BASH: true
-          # Note the `VALIDATE_BASH_SHFMT_CONFIG` environment variable, which should point to your `.shfmt` file relative to the root of your repository.
-          #VALIDATE_BASH_SHFMT_CONFIG: .github/linters/.shfmt
           VALIDATE_CSS: false
-          # TODO 211017 returns false positive `unknown Webhook event "workflow_call"`
+          # TODO 211017 VALIDATE_GITHUB_ACTIONS returns false positive `unknown Webhook event "workflow_call"`
           #VALIDATE_GITHUB_ACTIONS: false # 240519 is workflow_call understood?
           # TODO 211003 returns false positive: {"line":"                    <li><a href=\"https://www.linkedin.com/company/MYCMSPROJECTSPECIFIC\" title=\"{=\"MYCMSPROJECTSPECIFIC na LinkedIn\"|translate}\"><i class=\"fa fa-linkedin\" aria-hidden=\"true\"></i></a></li>","lineNumber":56,"offender":"linkedin.com/company/MYCMSPROJECTSPECIFIC","offenderEntropy":-1,"commit":"","repo":"","repoURL":"","leakURL":"","rule":"LinkedIn Secret Key","commitMessage":"","author":"","email":"","file":".","date":"0001-01-01T00:00:00Z","tags":"secret, LinkedIn"}
           VALIDATE_GITLEAKS: false
@@ -78,3 +73,5 @@ jobs:
           # PHPStan run in matrix strategy in php-composer-phpunit.yml
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false
+          # 240519 .shfmt is not taken into account, so far
+          VALIDATE_SHELL_SHFMT: false

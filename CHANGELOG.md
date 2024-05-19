@@ -26,7 +26,7 @@ Proven reusable workflows
 - Automatic PHP improvements: phpcbf.yml
 
 ### Fixed
-- added .shfmt configuration for super-linter
+- added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
 [Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.1...HEAD
 [0.1]: https://github.com/WorkOfStan/seablast-actions/releases/tag/v0.1

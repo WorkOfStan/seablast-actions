@@ -41,3 +41,13 @@ jobs:
   call-workflow:
     uses: WorkOfStan/seablast-actions/.github/workflows/phpcbf.yml@main
 ```
+
+## SHFMT notes
+super-linter configuration in [linter.yml](./github/workflows/linter.yml) refering to <.github/linters/.shfmt>
+```yml
+SHELL_SHFMT_FILE_NAME: .shfmt
+```
+is ignored in the end, as the code doesn't use the configuration:
+see <https://github.com/super-linter/super-linter/blob/main/lib/functions/linterCommands.sh> -> `LINTER_COMMANDS_ARRAY_SHELL_SHFMT=(shfmt -d)`
+
+And the default is to use 1 TAB as indentations, while the coding standard used here expects 4 spaces, so SHALL_SHFMT validation is turned off.
