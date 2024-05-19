@@ -17,13 +17,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
-## [0.1] - 2024-05-18
+## [0.1] - 2024-05-19
 Proven reusable workflows
 ### Added
 - php-composer-dependencies-reusable.yml: Test composer dependencies, PHPUnit tests and PHPStan check
 - overtrue-phplint.yml: Basic PHP linter
 - linter.yml: [Super-Linter](https://github.com/super-linter/super-linter) of many formats
 - Automatic PHP improvements: phpcbf.yml
+
+### Fixed
+- added .shfmt configuration
 
 [Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.1...HEAD
 [0.1]: https://github.com/WorkOfStan/seablast-actions/releases/tag/v0.1
