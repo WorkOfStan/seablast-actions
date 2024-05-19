@@ -61,7 +61,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml
           # Environment variable, which should point to your `.shfmt` file relative to the root of your repository.
-          SHELL_SHFMT_FILE_NAME: .github/linters/.shfmt
+          SHELL_SHFMT_FILE_NAME: /.github/linters/.shfmt
           VALIDATE_JAVASCRIPT_STANDARD: false
           VALIDATE_ANSIBLE: false
           # 240519 does VALIDATE_BASH: true make difference?
