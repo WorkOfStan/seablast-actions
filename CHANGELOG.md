@@ -26,7 +26,7 @@ Proven reusable workflows
 - Automatic PHP improvements: phpcbf.yml
 
 ### Fixed
-- added .shfmt configuration
+- added .shfmt configuration for super-linter
 
 [Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.1...HEAD
 [0.1]: https://github.com/WorkOfStan/seablast-actions/releases/tag/v0.1
