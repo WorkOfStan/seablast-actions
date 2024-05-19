@@ -60,6 +60,8 @@ jobs:
           DEFAULT_BRANCH: WorkOfStan-patch-1
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml
+          # Environment variable, which should point to your `.shfmt` file relative to the root of your repository.
+          SHELL_SHFMT_FILE_NAME: .github/linters/.shfmt
           VALIDATE_JAVASCRIPT_STANDARD: false
           VALIDATE_ANSIBLE: false
           # 240519 does VALIDATE_BASH: true make difference?
@@ -76,4 +78,3 @@ jobs:
           # PHPStan run in matrix strategy in php-composer-phpunit.yml
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false
-          VALIDATE_SHELL_SHFMT_CONFIG: .github/linters/.shfmt
