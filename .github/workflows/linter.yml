@@ -57,7 +57,7 @@ jobs:
         uses: super-linter/super-linter@main
         env:
           VALIDATE_ALL_CODEBASE: true
-          DEFAULT_BRANCH: main
+          DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml
           #SHELL_SHFMT_FILE_NAME: .shfmt

@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Removed` for now removed features
 
 ### `Fixed` for any bugfixes
+- DEFAULT_BRANCH adapts to the current branch
 
 ### `Security` in case of vulnerabilities
 
