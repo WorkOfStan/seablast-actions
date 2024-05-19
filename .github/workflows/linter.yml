@@ -63,9 +63,9 @@ jobs:
           VALIDATE_JAVASCRIPT_STANDARD: false
           VALIDATE_ANSIBLE: false
           # 240519 does VALIDATE_BASH: true make difference?
-          VALIDATE_BASH: true
+          #VALIDATE_BASH: true
           # Note the `VALIDATE_BASH_SHFMT_CONFIG` environment variable, which should point to your `.shfmt` file relative to the root of your repository.
-          VALIDATE_BASH_SHFMT_CONFIG: .github/linters/.shfmt
+          #VALIDATE_BASH_SHFMT_CONFIG: .github/linters/.shfmt
           VALIDATE_CSS: false
           # TODO 211017 returns false positive `unknown Webhook event "workflow_call"`
           #VALIDATE_GITHUB_ACTIONS: false # 240519 is workflow_call understood?
@@ -76,3 +76,4 @@ jobs:
           # PHPStan run in matrix strategy in php-composer-phpunit.yml
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false
+          VALIDATE_SHELL_SHFMT_CONFIG: .github/linters/.shfmt
