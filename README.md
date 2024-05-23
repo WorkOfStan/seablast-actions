@@ -18,6 +18,8 @@ jobs:
       php-version: '["7.2", "7.3", "7.4"]'
 ```
 
+PHPUnit tests are triggered only if conf/phpunit-github.xml is present.
+
 Basic PHP linter
 ```yml
 jobs:
