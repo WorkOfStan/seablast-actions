@@ -8,13 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Added` for new features
 
 ### `Changed` for changes in existing functionality
+- php-composer-dependencies-reusable: phinx and dist config file path can be modified
 
 ### `Deprecated` for soon-to-be removed features
 
 ### `Removed` for now removed features
 
 ### `Fixed` for any bugfixes
-- DEFAULT_BRANCH adapts to the current branch
+- linter.yml: DEFAULT_BRANCH adapts to the current branch
 
 ### `Security` in case of vulnerabilities
 
