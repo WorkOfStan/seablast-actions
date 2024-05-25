@@ -18,7 +18,7 @@ jobs:
       php-version: '["7.2", "7.3", "7.4"]'
 ```
 
-PHPUnit tests are triggered only if conf/phpunit-github.xml is present.
+PHPUnit tests are triggered only if `conf/phpunit-github.xml` is present. (This configuration may be different from the usual `./phpunit.xml`.)
 
 Basic PHP linter
 ```yml
