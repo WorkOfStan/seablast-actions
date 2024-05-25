@@ -7,6 +7,24 @@ on:
       php-version:
         required: true
         type: string
+      phinx-config:
+        required: false
+        type: string
+        default: "phinx.dist.yml"
+      # path where the app code is looking for the configuration
+      phinxlocal-config:
+        required: false
+        type: string
+        default: "phinx.yml"          
+      # phpdist-config specimen is used to create the actual phplocal-config
+      phpdist-config:
+        required: false
+        type: string
+        default: "./conf/app.conf.dist.php"
+      phplocal-config:
+        required: false
+        type: string
+        default: "./conf/app.conf.local.php"
 
 permissions:
   contents: read
@@ -49,12 +67,12 @@ jobs:
           # fixes Error: Could not authenticate against github.com
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Database tests should fire up only if phinx.dist.yml is present
+      # Database tests should fire up only if the specified Phinx config file is present
       - name: Check database config file existence
         id: check_files_database
         uses: andstor/file-existence-action@v3
         with:
-          files: "phinx.dist.yml"
+          files: "${{ inputs.phinx-config }}"
 
       # PHPUnit tests should fire up only if conf/phpunit-github.xml is present
       - name: Check PHPUnit config file existence
@@ -63,12 +81,12 @@ jobs:
         with:
           files: "./conf/phpunit-github.xml"
 
-      # Copy config.local.dist.php only if present
+      # Copy config.local.dist.php specimen only if present
       - name: Check existence of specimen for config.local.php
         id: check_files_configlocaldist
         uses: andstor/file-existence-action@v3
         with:
-          files: "./conf/config.local.dist.php"
+          files: "${{ inputs.phpdist-config }}"
 
       - name: "MySQL db ${{ env.DB_DATABASE }}"
         if: steps.check_files_database.outputs.files_exists == 'true'
@@ -105,15 +123,16 @@ jobs:
       # to fix `Constant DB_USERNAME not found.` etc not only for phpstan but also for phpunit tests
       - name: Copy local config files
         if: steps.check_files_configlocaldist.outputs.files_exists == 'true'
-        run: cp -p conf/config.local.dist.php conf/config.local.php
+        run: cp -p "${{ inputs.phpdist-config }}" "${{ inputs.phplocal-config }}"
 
       - name: Copy local testing database settings
         if: steps.check_files_database.outputs.files_exists == 'true'
-        run: cp -p phinx.dist.yml phinx.yml
+        run: cp -p "${{ inputs.phinx-config }}" "${{ inputs.phinxlocal-config }}"
 
       - name: Phinx migration - migrate
-        if: ${{ matrix.php-version >= '7.1' && steps.check_files_database.outputs.files_exists == 'true' }} #PHP/5.6 has auth problem with MySQL/8
-        run: "./vendor/bin/phinx migrate -e testing"
+        #PHP/5.6 has auth problem with MySQL/8
+        if: ${{ matrix.php-version >= '7.1' && steps.check_files_database.outputs.files_exists == 'true' }}
+        run: ./vendor/bin/phinx migrate -e testing --configuration "${{ inputs.phinx-config }}"
 
       - name: Install dependencies
         if: ${{ steps.vendor-cache.outputs.cache-hit != 'true' }}
