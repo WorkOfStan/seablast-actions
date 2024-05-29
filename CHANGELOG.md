@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - php-composer-dependencies-reusable: phinx and dist config file path can be modified
 
 ### Fixed
-- linter.yml: DEFAULT_BRANCH adapts to the current branch
+- linter.yml: DEFAULT_BRANCH adapts to the current branch. `actions/checkout with fetch-depth: 0` to fetch all history for all branches and tags to provide history with pull_request.
 
 ## [0.1] - 2024-05-19
 Proven reusable workflows
