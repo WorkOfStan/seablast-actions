@@ -8,16 +8,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Added` for new features
 
 ### `Changed` for changes in existing functionality
-- php-composer-dependencies-reusable: phinx and dist config file path can be modified
 
 ### `Deprecated` for soon-to-be removed features
 
 ### `Removed` for now removed features
 
 ### `Fixed` for any bugfixes
-- linter.yml: DEFAULT_BRANCH adapts to the current branch
 
 ### `Security` in case of vulnerabilities
+
+## [0.1.1] - 2024-05-29
+### Changed
+- php-composer-dependencies-reusable: phinx and dist config file path can be modified
+
+### Fixed
+- linter.yml: DEFAULT_BRANCH adapts to the current branch. `actions/checkout with fetch-depth: 0` to fetch all history for all branches and tags to provide history with pull_request.
 
 ## [0.1] - 2024-05-19
 Proven reusable workflows
@@ -30,5 +35,6 @@ Proven reusable workflows
 ### Fixed
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.1...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/WorkOfStan/seablast-actions/compare/v0.1...v0.1.1
 [0.1]: https://github.com/WorkOfStan/seablast-actions/releases/tag/v0.1
