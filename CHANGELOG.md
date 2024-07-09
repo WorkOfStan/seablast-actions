@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### `Added` for new features
+- Check PHP syntax for each PHP version separately
 
 ### `Changed` for changes in existing functionality
 
