@@ -69,7 +69,7 @@ jobs:
 
       - name: Get PHP version
         id: php_version
-        run: echo "version=$(php -r 'echo PHP_VERSION;')" >> $GITHUB_OUTPUT
+        run: echo "version=$(php -r 'echo PHP_VERSION;')" >> "$GITHUB_OUTPUT"
 
       # Check syntax for the specific PHP version
       - name: Check PHP syntax ${{ steps.php_version.outputs.version }}
