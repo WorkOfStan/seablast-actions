@@ -67,9 +67,13 @@ jobs:
           # fixes Error: Could not authenticate against github.com
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Check syntax for the specific PHP version (TODO which patch version?)
-      - name: "PHP syntax"
-        run: find ./ -name "*.php" | xargs -n 1 php -l
+      - name: Get PHP version
+        id: php_version
+        run: echo "::set-output name=version::$(php -r 'echo PHP_VERSION;')"
+
+      # Check syntax for the specific PHP version
+      - name: Check PHP syntax ${{ steps.php_version.outputs.version }}
+        run: find ./ -name "*.php" -print0 | xargs -0 -n 1 php -l
   
       # Database tests should fire up only if the specified Phinx config file is present
       - name: Check database config file existence
