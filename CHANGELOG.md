@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Check PHP syntax for each PHP version separately
 
 ### `Changed` for changes in existing functionality
+- `VALIDATE_JAVASCRIPT_PRETTIER: false` as there's no way to configure JAVASCRIPT_PRETTIER, neither it shows what exactly an issue is. Just 'Code style issue found in file.', which is useless.
 
 ### `Deprecated` for soon-to-be removed features
 
