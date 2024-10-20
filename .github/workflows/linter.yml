@@ -18,11 +18,11 @@ on:
   push:
     branches-ignore:
       # notest branches to ignore testing of partial online commits
-      - 'notest/**'
+      - "notest/**"
   pull_request:
     branches-ignore:
       # notest branches to ignore testing of partial online commits
-      - 'notest/**'
+      - "notest/**"
   workflow_call:
 
 permissions:
@@ -50,7 +50,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found. 
+          fetch-depth: 0 # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found. 
 
       ################################
       # Run Linter against code base #

@@ -15,7 +15,7 @@ on:
       phinxlocal-config:
         required: false
         type: string
-        default: "phinx.yml"          
+        default: "phinx.yml"
       # phpdist-config specimen is used to create the actual phplocal-config
       phpdist-config:
         required: false
@@ -48,7 +48,7 @@ jobs:
       # same as phinx.dist.yml-testing
       DB_DATABASE: testing_db
       DB_USER: root
-      DB_PASSWORD: 'root'
+      DB_PASSWORD: "root"
       #DB_HOST: localhost
 
     steps:
@@ -74,7 +74,7 @@ jobs:
       # Check syntax for the specific PHP version
       - name: Check PHP syntax ${{ steps.php_version.outputs.version }}
         run: find ./ -name "*.php" -print0 | xargs -0 -n 1 php -l
-  
+
       # Database tests should fire up only if the specified Phinx config file is present
       - name: Check database config file existence
         id: check_files_database
