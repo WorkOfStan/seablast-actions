@@ -7,7 +7,7 @@ Supports: "php": "5.6 || ^7.0 || ^8.0"
 
 See <https://github.com/WorkOfStan/seablast-dist/tree/main/.github/workflows> for an actual example.
 
-## Test composer dependencies, PHPUnit tests and PHPStan check
+## Test composer dependencies, PHPUnit tests (incl. database) and PHPStan check
 
 ```yml
 jobs:

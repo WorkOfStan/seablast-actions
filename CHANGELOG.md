@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Changed` for changes in existing functionality
 
-- php-composer-dependencies-reusable: phinx runs only after composer update, so that phinx can be in require-dev section
+- php-composer-dependencies-reusable: phinx runs only after composer update (not just no-dev), so that phinx can be in require-dev section
 - [prettier-fix](https://github.com/WorkOfStan/prettier-fix) included to fix all those `VALIDATE_something_PRETTIER` that are now crucial part of super-linter
 
 ### `Deprecated` for soon-to-be removed features
