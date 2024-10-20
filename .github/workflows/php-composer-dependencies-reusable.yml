@@ -31,7 +31,6 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ${{ matrix.operating-system }}
     # Limit the running time
     timeout-minutes: 10
