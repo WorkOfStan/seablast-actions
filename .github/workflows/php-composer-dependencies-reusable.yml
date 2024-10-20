@@ -15,7 +15,7 @@ on:
       phinxlocal-config:
         required: false
         type: string
-        default: "phinx.yml"          
+        default: "phinx.yml"
       # phpdist-config specimen is used to create the actual phplocal-config
       phpdist-config:
         required: false
@@ -31,7 +31,6 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ${{ matrix.operating-system }}
     # Limit the running time
     timeout-minutes: 10
@@ -48,7 +47,7 @@ jobs:
       # same as phinx.dist.yml-testing
       DB_DATABASE: testing_db
       DB_USER: root
-      DB_PASSWORD: 'root'
+      DB_PASSWORD: "root"
       #DB_HOST: localhost
 
     steps:
@@ -74,7 +73,7 @@ jobs:
       # Check syntax for the specific PHP version
       - name: Check PHP syntax ${{ steps.php_version.outputs.version }}
         run: find ./ -name "*.php" -print0 | xargs -0 -n 1 php -l
-  
+
       # Database tests should fire up only if the specified Phinx config file is present
       - name: Check database config file existence
         id: check_files_database
@@ -137,14 +136,14 @@ jobs:
         if: steps.check_files_database.outputs.files_exists == 'true'
         run: cp -p "${{ inputs.phinx-config }}" "${{ inputs.phinxlocal-config }}"
 
+      - name: Install dependencies
+        if: ${{ steps.vendor-cache.outputs.cache-hit != 'true' }}
+        run: composer update --prefer-dist --no-progress
+
       - name: Phinx migration - migrate
         #PHP/5.6 has auth problem with MySQL/8
         if: ${{ matrix.php-version >= '7.1' && steps.check_files_database.outputs.files_exists == 'true' }}
         run: ./vendor/bin/phinx migrate -e testing --configuration "${{ inputs.phinx-config }}"
-
-      - name: Install dependencies
-        if: ${{ steps.vendor-cache.outputs.cache-hit != 'true' }}
-        run: composer update --prefer-dist --no-progress
 
       # PHPunit is installed anyway, so it doesn't make sense to use tools: phpunit
       # Note `sudo /etc/init.d/apache2 start` uses `/etc/apache2/sites-enabled/000-default.conf` where DocumentRoot = `/var/www/html` but without PHP
