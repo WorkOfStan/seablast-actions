@@ -43,6 +43,11 @@ jobs:
     uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@main
 ```
 
+With the release of [Super-Linter](https://github.com/super-linter/super-linter) 7.0.0, [Prettier](https://prettier.io/) has become the standard for many file formats, ensuring consistent code styling across your projects.
+Embrace this change and keep your codebase looking sharp by integrating Prettier directly into your workflow.
+While you can still rely on your favorite IDE to apply Prettier's formatting, why not automate the process with this GitHub Action using vanilla Prettier?
+Use [prettier-fix](https://github.com/marketplace/actions/prettier-fix).
+
 ### SHFMT notes
 Super-linter configuration in [linter.yml](./github/workflows/linter.yml) refering to <.github/linters/.shfmt>
 ```yml

@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Check PHP syntax for each PHP version separately
 
 ### `Changed` for changes in existing functionality
-- `VALIDATE_JAVASCRIPT_PRETTIER: false` as there's no way to configure JAVASCRIPT_PRETTIER, neither it shows what exactly an issue is. Just 'Code style issue found in file.', which is useless.
+- php-composer-dependencies-reusable: phinx runs only after composer update, so that phinx can be in require-dev section
+- [prettier-fix](https://github.com/WorkOfStan/prettier-fix) included to fix all those `VALIDATE_something_PRETTIER` that are now crucial part of super-linter
 
 ### `Deprecated` for soon-to-be removed features
 
