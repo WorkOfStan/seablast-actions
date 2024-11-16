@@ -17,7 +17,7 @@ on:
         required: false
         type: string
         default: "phinx.yml"
-      # OPTIONAL phpdist-config specimen is used to create the actual phplocal-config
+      # OPTIONAL path to phpdist-config specimen which is used to create the actual phplocal-config
       phpdist-config:
         required: false
         type: string
