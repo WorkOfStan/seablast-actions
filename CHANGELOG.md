@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - php-composer-dependencies-reusable: phinx runs only after composer update (not just no-dev), so that phinx can be in require-dev section
 - [prettier-fix](https://github.com/WorkOfStan/prettier-fix) included to fix all those `VALIDATE_something_PRETTIER` that are now crucial part of super-linter
+- phpstan added with tools of shivammathur/setup-php@v2 is the latest one, which may not be supported (e.g. phpstan:2.0.1 fails php:7.2,7.3) so phpstan is now installed by `composer require --dev phpstan/phpstan-webmozart-assert`
 
 ### `Deprecated` for soon-to-be removed features
 
