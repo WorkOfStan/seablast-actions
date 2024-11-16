@@ -23,6 +23,7 @@ jobs:
       phinxlocal-config: "phinx.yml"
       # OPTIONAL path to phpdist-config specimen which is used to create the actual phplocal-config
       phpdist-config: "./conf/app.conf.dist.php"
+      # OPTIONAL path where the app code is looking for the local app configuration
       phplocal-config: "./conf/app.conf.local.php"
 ```
 

@@ -7,20 +7,22 @@ on:
       php-version:
         required: true
         type: string
+      # OPTIONAL path with the default database configuration
       phinx-config:
         required: false
         type: string
         default: "phinx.dist.yml"
-      # path where the app code is looking for the configuration
+      # OPTIONAL path where the app code is looking for the database configuration
       phinxlocal-config:
         required: false
         type: string
         default: "phinx.yml"
-      # phpdist-config specimen is used to create the actual phplocal-config
+      # OPTIONAL path to phpdist-config specimen which is used to create the actual phplocal-config
       phpdist-config:
         required: false
         type: string
         default: "./conf/app.conf.dist.php"
+      # OPTIONAL path where the app code is looking for the local app configuration
       phplocal-config:
         required: false
         type: string
@@ -58,8 +60,9 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
-          tools: composer:v2, phpstan
-          # Note: phpstan call fails for PHP<7.1
+          tools: composer:v2
+          # phpstan added by tools is the latest one, which may not be supported: e.g. phpstan:2.0.1 fails php:7.2,7.3
+          # Note: when phpstan is added by tools phpstan call fails for PHP<7.1
           # coverage none turns off Xdebug as in PHP 5.6,7.0 it would change (format) var_dump output
           coverage: none
         env:
@@ -152,18 +155,12 @@ jobs:
         if: ${{ matrix.php-version >= '7.1' && steps.check_files_phpunit.outputs.files_exists == 'true' }}
         run: ./vendor/bin/phpunit -c ./conf/phpunit-github.xml
 
-      # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-      # Docs: https://getcomposer.org/doc/articles/scripts.md
-
-      # - name: Run test suite
-      #   run: composer run-script test
-
       # PHPStan works ok for PHP/7.2+ so PHPStan can't even be in composer.json (as ^5.6|^7.0 might be supported)
       - name: "Composer phpstan-webmozart-assert"
         if: ${{ matrix.php-version >= '7.2' && steps.vendor-cache.outputs.cache-hit != 'true' }}
-        run: |
-          composer require --dev phpstan/phpstan-webmozart-assert --prefer-dist --no-progress
-          #todo return when rector ready for phpstan:1.0#composer require --dev rector/rector --prefer-dist --no-progress
+        run: composer require --dev phpstan/phpstan-webmozart-assert --prefer-dist --no-progress
+        # this will also add the supported version of phpstan/phpstan
+
       - name: "PHPStan webmozart-assert"
         if: ${{ matrix.php-version >= '7.2' }}
-        run: phpstan --configuration=conf/phpstan.webmozart-assert.neon analyse --no-interaction --no-progress .
+        run: ./vendor/bin/phpstan.phar --configuration=conf/phpstan.webmozart-assert.neon analyse --no-interaction --no-progress .
