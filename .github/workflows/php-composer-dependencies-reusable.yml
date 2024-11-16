@@ -164,9 +164,8 @@ jobs:
       # PHPStan works ok for PHP/7.2+ so PHPStan can't even be in composer.json (as ^5.6|^7.0 might be supported)
       - name: "Composer phpstan-webmozart-assert"
         if: ${{ matrix.php-version >= '7.2' && steps.vendor-cache.outputs.cache-hit != 'true' }}
-        run: |
-          composer require --dev phpstan/phpstan-webmozart-assert --prefer-dist --no-progress
-          # this will also add the supported version of phpstan/phpstan
+        run: composer require --dev phpstan/phpstan-webmozart-assert --prefer-dist --no-progress
+        # this will also add the supported version of phpstan/phpstan
 
       - name: "PHPStan webmozart-assert"
         if: ${{ matrix.php-version >= '7.2' }}
