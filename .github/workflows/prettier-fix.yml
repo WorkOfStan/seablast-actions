@@ -23,5 +23,5 @@ jobs:
     steps:
       - name: Invoke the Prettier fix
         uses: WorkOfStan/prettier-fix@v1.1.0
-        #with:
-        #  node-version: "20"
+        with:
+          commit-changes: true
