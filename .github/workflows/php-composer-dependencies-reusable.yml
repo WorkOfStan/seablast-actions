@@ -163,4 +163,8 @@ jobs:
 
       - name: "PHPStan webmozart-assert"
         if: ${{ matrix.php-version >= '7.2' }}
-        run: ./vendor/bin/phpstan.phar --configuration=conf/phpstan.webmozart-assert.neon analyse --no-interaction --no-progress .
+        run: |
+          # show version
+          ./vendor/bin/phpstan.phar -V
+          # analyze
+          ./vendor/bin/phpstan.phar --configuration=conf/phpstan.webmozart-assert.neon analyse --no-interaction --no-progress .
