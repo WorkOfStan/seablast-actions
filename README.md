@@ -52,7 +52,7 @@ Embrace this change and keep your codebase looking sharp by integrating Prettier
 
 ### SHFMT notes
 
-Super-linter configuration in [linter.yml](./github/workflows/linter.yml) refering to <.github/linters/.shfmt>
+Super-linter configuration in [linter.yml](./github/workflows/linter.yml) refering to [.github/linters/.shfmt](.github/linters/.shfmt)
 
 ```yml
 SHELL_SHFMT_FILE_NAME: .shfmt
@@ -71,3 +71,5 @@ jobs:
   call-workflow:
     uses: WorkOfStan/seablast-actions/.github/workflows/phpcbf.yml@main
 ```
+
+See an example [phpcbf.yml](https://github.com/WorkOfStan/seablast-dist/blob/main/.github/workflows/phpcbf.yml) for usage.
