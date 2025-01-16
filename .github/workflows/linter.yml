@@ -41,7 +41,7 @@ jobs:
     # Name the Job
     name: Lint Code Base
     # Set the agent to run on
-    runs-on: "${{ inputs.runs-on }}"
+    runs-on: "${{ inputs.runs-on || 'ubuntu-latest' }}"
     # Limit the running time
     timeout-minutes: 10
 
