@@ -65,6 +65,7 @@ jobs:
       # Fetch latest changes (even by previous job)
       - name: Fetch latest changes
         run: git pull origin ${{ github.ref }}
+        shell: bash
 
       - name: "Install PHP ${{ matrix.php-version }} Test on ${{ runner.os }}"
         uses: "shivammathur/setup-php@v2"
@@ -82,10 +83,12 @@ jobs:
       - name: Get PHP version
         id: php_version
         run: echo "version=$(php -r 'echo PHP_VERSION;')" >> "$GITHUB_OUTPUT"
+        shell: bash
 
       # Check syntax for the specific PHP version
       - name: Check PHP syntax ${{ steps.php_version.outputs.version }}
         run: find ./ -name "*.php" -print0 | xargs -0 -n 1 php -l
+        shell: bash
 
       # Database tests should fire up only if the specified Phinx config file is present
       - name: Check database config file existence
@@ -117,6 +120,7 @@ jobs:
           mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
           mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
           mysql -e 'SHOW DATABASES;' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+        shell: bash
 
       # https://github.com/actions/cache
       # A repository can have up to 10 GB of caches. Once the 10 GB limit is reached, older caches will be evicted based on when the cache was last accessed.
@@ -135,28 +139,34 @@ jobs:
       - name: Validate composer.json and composer.lock
         if: ${{ steps.vendor-cache.outputs.cache-hit != 'true' }}
         run: composer validate
+        shell: bash
 
       - name: Install no-dev dependencies
         if: ${{ steps.vendor-cache.outputs.cache-hit != 'true' }}
         run: composer update --no-dev --prefer-dist --no-progress
+        shell: bash
 
       # to fix `Constant DB_USERNAME not found.` etc not only for phpstan but also for phpunit tests
       - name: Copy local config files
         if: steps.check_files_configlocaldist.outputs.files_exists == 'true'
         run: cp -p "${{ inputs.phpdist-config }}" "${{ inputs.phplocal-config }}"
+        shell: bash
 
       - name: Copy local testing database settings
         if: steps.check_files_database.outputs.files_exists == 'true'
         run: cp -p "${{ inputs.phinx-config }}" "${{ inputs.phinxlocal-config }}"
+        shell: bash
 
       - name: Install dependencies
         if: ${{ steps.vendor-cache.outputs.cache-hit != 'true' }}
         run: composer update --prefer-dist --no-progress
+        shell: bash
 
       - name: Phinx migration - migrate
         #PHP/5.6 has auth problem with MySQL/8
         if: ${{ matrix.php-version >= '7.1' && steps.check_files_database.outputs.files_exists == 'true' }}
         run: ./vendor/bin/phinx migrate -e testing --configuration "${{ inputs.phinx-config }}"
+        shell: bash
 
       # PHPunit is installed anyway, so it doesn't make sense to use tools: phpunit
       # Note `sudo /etc/init.d/apache2 start` uses `/etc/apache2/sites-enabled/000-default.conf` where DocumentRoot = `/var/www/html` but without PHP
@@ -164,12 +174,14 @@ jobs:
       - name: "PHPUnit tests with MySQL"
         if: ${{ matrix.php-version >= '7.1' && steps.check_files_phpunit.outputs.files_exists == 'true' }}
         run: ./vendor/bin/phpunit -c ./conf/phpunit-github.xml
+        shell: bash
 
       # PHPStan works ok for PHP/7.2+ so PHPStan can't even be in composer.json (as ^5.6|^7.0 might be supported)
       - name: "Composer phpstan-webmozart-assert"
         if: ${{ matrix.php-version >= '7.2' && steps.vendor-cache.outputs.cache-hit != 'true' }}
         run: composer require --dev phpstan/phpstan-webmozart-assert --prefer-dist --no-progress
         # this will also add the supported version of phpstan/phpstan
+        shell: bash
 
       - name: "PHPStan webmozart-assert"
         if: ${{ matrix.php-version >= '7.2' }}
@@ -178,3 +190,4 @@ jobs:
           ./vendor/bin/phpstan.phar -V
           # analyze
           ./vendor/bin/phpstan.phar --configuration=conf/phpstan.webmozart-assert.neon analyse --no-interaction --no-progress .
+        shell: bash

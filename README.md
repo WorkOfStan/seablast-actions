@@ -5,7 +5,24 @@ Streamline your development process and ensure consistent build, test, and deplo
 
 Supports: "php": "5.6 || ^7.0 || ^8.0"
 
+## Example
 See <https://github.com/WorkOfStan/seablast-dist/tree/main/.github/workflows> for an actual example.
+
+Note that there are two ways to chain jobs (as typically you want to lint a code only if it is actually working [not to waste computing time]).
+One is to trigger workflows by running another workflow successfully first:
+
+```yaml
+ on:
+  workflow_run:
+    workflows:
+      - First Action
+    types:
+      - completed
+```      
+
+but as this condition works **ONLY** on the default branch, and typically you need to run workflows on dev branches to make sure the code is working and well formatted,
+there's the second way. Chaining jobs within a single workflow by using `needs` command.
+See <https://github.com/WorkOfStan/seablast-dist/blob/main/.github/workflows/polish-the-code.yml> for an actual example.
 
 ## Test composer dependencies, PHPUnit tests (incl. database) and PHPStan check
 
@@ -73,11 +90,4 @@ And the default is to use 1 TAB as indentations, while the coding standard used 
 
 ## Automatic PHP Code Style improvements
 
-```yml
-jobs:
-  # Note: https://docs.github.com/en/actions/using-workflows/reusing-workflows The strategy property is not supported in any job that calls a reusable workflow.
-  call-workflow:
-    uses: WorkOfStan/seablast-actions/.github/workflows/phpcbf.yml@main
-```
-
-See an example [phpcbf.yml](https://github.com/WorkOfStan/seablast-dist/blob/main/.github/workflows/phpcbf.yml) for usage.
+Use [PHPCS-Fix](https://github.com/WorkOfStan/phpcs-fix/blob/main/.github/workflows/phpcs-phpcbf.yml).

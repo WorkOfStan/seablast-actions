@@ -9,13 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added` for new features
 
+- chain jobs example
+
 ### `Changed` for changes in existing functionality
 
 ### `Deprecated` for soon-to-be removed features
 
+- stop using [phpcbf.yml](.github/workflows/phpcbf.yml) and start using [PHPCS-Fix](https://github.com/WorkOfStan/phpcs-fix/blob/main/.github/workflows/phpcs-phpcbf.yml)
+
 ### `Removed` for now removed features
 
 ### `Fixed` for any bugfixes
+
+- `shell: bash` added where missing
 
 ### `Security` in case of vulnerabilities
 
@@ -23,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- show PHPStan version before analyzing
 - runs-on input can change the runner for reusable workflows linter.yml, overtrue-phplint.yml and php-composer-dependencies-reusable.yml
 
 ### Fixed
