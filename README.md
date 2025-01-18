@@ -6,19 +6,20 @@ Streamline your development process and ensure consistent build, test, and deplo
 Supports: "php": "5.6 || ^7.0 || ^8.0"
 
 ## Example
+
 See <https://github.com/WorkOfStan/seablast-dist/tree/main/.github/workflows> for an actual example.
 
 Note that there are two ways to chain jobs (as typically you want to lint a code only if it is actually working [not to waste computing time]).
 One is to trigger workflows by running another workflow successfully first:
 
 ```yaml
- on:
+on:
   workflow_run:
     workflows:
       - First Action
     types:
       - completed
-```      
+```
 
 but as this condition works **ONLY** on the default branch, and typically you need to run workflows on dev branches to make sure the code is working and well formatted,
 there's the second way. Chaining jobs within a single workflow by using `needs` command.
