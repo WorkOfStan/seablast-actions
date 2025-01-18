@@ -2,6 +2,11 @@
 name: PHP Linting (Overtrue)
 on:
   workflow_call:
+    inputs:
+      runs-on:
+        required: false
+        type: string
+        default: "ubuntu-latest"
 
 permissions:
   contents: read
@@ -11,12 +16,18 @@ jobs:
   #  call-workflow:
   #    uses: WorkOfStan/seablast-actions/.github/workflows/overtrue-phplint.yml@main
   phplint:
-    runs-on: ubuntu-latest
+    runs-on: "${{ inputs.runs-on }}"
     # Limit the running time
     timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0 # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
+      # Fetch latest changes (even by previous job)
+      - name: Fetch latest changes
+        run: git pull origin ${{ github.ref }}
 
       - name: Check PHP syntax errors
         uses: overtrue/phplint@9.5.5

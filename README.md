@@ -25,6 +25,8 @@ jobs:
       phpdist-config: "./conf/app.conf.dist.php"
       # OPTIONAL path where the app code is looking for the local app configuration
       phplocal-config: "./conf/app.conf.local.php"
+      # OPTIONAL runner specification
+      runs-on: "ubuntu-latest"
 ```
 
 PHPUnit tests fire up only if `conf/phpunit-github.xml` is present. (This configuration may be different from the usual `./phpunit.xml`.)
@@ -36,6 +38,9 @@ jobs:
   # Note: https://docs.github.com/en/actions/using-workflows/reusing-workflows The strategy property is not supported in any job that calls a reusable workflow.
   call-workflow:
     uses: WorkOfStan/seablast-actions/.github/workflows/overtrue-phplint.yml@main
+    with:
+      # OPTIONAL runner specification
+      runs-on: "ubuntu-latest"
 ```
 
 ## [Super-Linter](https://github.com/super-linter/super-linter) of many formats
@@ -45,6 +50,9 @@ jobs:
   # Note: https://docs.github.com/en/actions/using-workflows/reusing-workflows The strategy property is not supported in any job that calls a reusable workflow.
   call-workflow:
     uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@main
+    with:
+      # OPTIONAL runner specification
+      runs-on: "ubuntu-latest"
 ```
 
 With the release of [Super-Linter](https://github.com/super-linter/super-linter) 7.0.0, [Prettier](https://prettier.io/) has become the standard for many file formats, ensuring consistent code styling across your projects.
