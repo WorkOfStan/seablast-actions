@@ -19,6 +19,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [0.2.1] - 2025-01-18
+
+### Added
+
+- runs-on input can change the runner for reusable workflows linter.yml, overtrue-phplint.yml and php-composer-dependencies-reusable.yml
+
+### Fixed
+
+- the reusable workflows linter.yml, overtrue-phplint.yml and php-composer-dependencies-reusable.yml fetch the latest changes even by a previous job to allow for job chaining
+
 ## [0.2] - 2024-11-16
 
 ### Added
@@ -56,7 +66,8 @@ Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2...v0.2.1
 [0.2]: https://github.com/WorkOfStan/seablast-actions/compare/v0.1.1...v0.2
 [0.1.1]: https://github.com/WorkOfStan/seablast-actions/compare/v0.1...v0.1.1
 [0.1]: https://github.com/WorkOfStan/seablast-actions/releases/tag/v0.1

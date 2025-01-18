@@ -24,6 +24,11 @@ on:
       # notest branches to ignore testing of partial online commits
       - "notest/**"
   workflow_call:
+    inputs:
+      runs-on:
+        required: false
+        type: string
+        default: "ubuntu-latest"
 
 permissions:
   contents: read
@@ -36,7 +41,7 @@ jobs:
     # Name the Job
     name: Lint Code Base
     # Set the agent to run on
-    runs-on: ubuntu-latest
+    runs-on: "${{ inputs.runs-on || 'ubuntu-latest' }}"
     # Limit the running time
     timeout-minutes: 10
 
@@ -50,7 +55,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.ref }}
           fetch-depth: 0 # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
+      # Fetch latest changes (even by previous job)
+      - name: Fetch latest changes
+        run: git pull origin ${{ github.ref }}
 
       ################################
       # Run Linter against code base #
