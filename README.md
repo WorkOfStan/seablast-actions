@@ -58,7 +58,7 @@ To optimize execution time, the `vendor` folder is cached, allowing dependencies
 
 This approach enables cache sharing across branches. However, if the `composer.json` file in the referenced branch (e.g., `dev`) changes, it's recommended to **invalidate the cache** to ensure a fresh `vendor` folder is built from scratch.
 
-The cache name (key) is `phpstan-${{ runner.os }}-PHP${{ matrix.php-version }}-vendor-${{ hashFiles('**/composer.json') }}`
+The cache name (key) is `phps-${{ runner.os }}-PHP${{ matrix.php-version }}-vendor-${{ hashFiles('**/composer.json') }}` (because the vendor folder includes PHPStan)
 
 ## Basic PHP linter
 
