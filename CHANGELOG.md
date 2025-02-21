@@ -9,21 +9,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added` for new features
 
-- chain jobs example
-
 ### `Changed` for changes in existing functionality
 
 ### `Deprecated` for soon-to-be removed features
-
-- stop using [phpcbf.yml](.github/workflows/phpcbf.yml) and start using [PHPCS-Fix](https://github.com/WorkOfStan/phpcs-fix/blob/main/.github/workflows/phpcs-phpcbf.yml)
 
 ### `Removed` for now removed features
 
 ### `Fixed` for any bugfixes
 
-- `shell: bash` added where missing
-
 ### `Security` in case of vulnerabilities
+
+## [0.2.2] - 2025-02-21
+
+### Added
+
+- chain jobs example
+
+### Changed
+
+- The cache name (key) is `phpstan-${{ runner.os }}-PHP${{ matrix.php-version }}-vendor-${{ hashFiles('**/composer.json') }}`
+
+### Deprecated
+
+- stop using [phpcbf.yml](.github/workflows/phpcbf.yml) and start using [PHPCS-Fix](https://github.com/WorkOfStan/phpcs-fix/blob/main/.github/workflows/phpcs-phpcbf.yml)
+
+### Fixed
+
+- `shell: bash` added where missing
 
 ## [0.2.1] - 2025-01-18
 
@@ -73,7 +85,8 @@ Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2...v0.2.1
 [0.2]: https://github.com/WorkOfStan/seablast-actions/compare/v0.1.1...v0.2
 [0.1.1]: https://github.com/WorkOfStan/seablast-actions/compare/v0.1...v0.1.1

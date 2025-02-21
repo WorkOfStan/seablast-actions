@@ -49,6 +49,17 @@ jobs:
 
 PHPUnit tests fire up only if `conf/phpunit-github.xml` is present. (This configuration may be different from the usual `./phpunit.xml`.)
 
+### Caching Mechanism
+
+To optimize execution time, the `vendor` folder is cached, allowing dependencies to be reused across workflow runs. The cache key is generated based on:
+
+- `composer.json` – to track dependency changes.
+- The runner's OS and PHP version – to account for environment-specific variations.
+
+This approach enables cache sharing across branches. However, if the `composer.json` file in the referenced branch (e.g., `dev`) changes, it's recommended to **invalidate the cache** to ensure a fresh `vendor` folder is built from scratch.
+
+The cache name (key) is `phpstan-${{ runner.os }}-PHP${{ matrix.php-version }}-vendor-${{ hashFiles('**/composer.json') }}`
+
 ## Basic PHP linter
 
 ```yml
