@@ -14,6 +14,10 @@ jobs:
     # Limit the running time
     timeout-minutes: 10
     steps:
+      - name: Run PHP Code Beautifier if needed
+        run: echo "::warning title=This GitHub Action is deprecated.::Use https://github.com/marketplace/actions/phpcs-fix instead."
+        shell: bash
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -24,7 +28,7 @@ jobs:
           # The installed coding standards are MySource, PEAR, PSR1, PSR12, PSR2, Squiz and Zend
           # Fixes PHP, JS, CSS and maybe other formats as well. It is possible to limit it by --extensions=php,module,inc,install,test,profile,theme,css,info,txt,md,yml
           # Ignore big js libraries not to exhaust memory
-          args: --standard=PSR12 --ignore=vendor,bootstrap,popper,jquery,summernote,Cookies,autrotrack,owlcarousel,ie10-viewport-bug-workaround.js,font-awesome .
+          args: --standard=PSR12 --ignore=vendor,bootstrap,popper,jquery,summernote,Cookies,autotrack,owlcarousel,ie10-viewport-bug-workaround.js,font-awesome .
           #args: --standard=PSR12 --ignore=vendor /github/workspace/
 
       # make the changes between checkout and push

@@ -19,10 +19,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [0.2.2] - 2025-02-21
+
+### Added
+
+- chain jobs example
+
+### Changed
+
+- The cache name (key) is `phps-${{ runner.os }}-PHP${{ matrix.php-version }}-vendor-${{ hashFiles('**/composer.json') }}`
+
+### Deprecated
+
+- stop using [phpcbf.yml](.github/workflows/phpcbf.yml) and start using [PHPCS-Fix](https://github.com/WorkOfStan/phpcs-fix/blob/main/.github/workflows/phpcs-phpcbf.yml)
+
+### Fixed
+
+- `shell: bash` added where missing
+
 ## [0.2.1] - 2025-01-18
 
 ### Added
 
+- show PHPStan version before analyzing
 - runs-on input can change the runner for reusable workflows linter.yml, overtrue-phplint.yml and php-composer-dependencies-reusable.yml
 
 ### Fixed
@@ -66,7 +85,8 @@ Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2...v0.2.1
 [0.2]: https://github.com/WorkOfStan/seablast-actions/compare/v0.1.1...v0.2
 [0.1.1]: https://github.com/WorkOfStan/seablast-actions/compare/v0.1...v0.1.1

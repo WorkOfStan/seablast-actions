@@ -28,6 +28,7 @@ jobs:
       # Fetch latest changes (even by previous job)
       - name: Fetch latest changes
         run: git pull origin ${{ github.ref }}
+        shell: bash
 
       - name: Check PHP syntax errors
-        uses: overtrue/phplint@9.5.5
+        uses: overtrue/phplint@9.5.6
