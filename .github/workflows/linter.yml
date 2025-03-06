@@ -29,6 +29,10 @@ on:
         required: false
         type: string
         default: "ubuntu-latest"
+      linter-version:
+        required: false
+        type: string
+        default: "main"  # This parameter allows you to change the super-linter version/branch
 
 permissions:
   contents: read
@@ -65,7 +69,7 @@ jobs:
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: super-linter/super-linter@main
+        uses: super-linter/super-linter@${{ inputs.linter-version }}
         env:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
