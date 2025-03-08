@@ -49,6 +49,9 @@ jobs:
     runs-on: "${{ inputs.runs-on || 'ubuntu-latest' }}"
     # Limit the running time
     timeout-minutes: 10
+    strategy:
+      matrix:
+        super-linter-version: [ ${{ github.event_name == 'workflow_call' && 'super-linter/super-linter@' + inputs.linter-version || 'super-linter/super-linter@main' }} ]
 
     ##################
     # Load all steps #
@@ -88,7 +91,7 @@ jobs:
       # However, the `uses` field in a step is processed very early—before runtime—so it requires a static string.
       - name: Lint Code Base (Workflow Call)
         if: ${{ github.event_name == 'workflow_call' }}
-        uses: super-linter/super-linter${{ inputs['linter-version'] }}
+        uses: ${{ matrix.super-linter-version }}
         env:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
