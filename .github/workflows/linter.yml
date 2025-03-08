@@ -51,7 +51,8 @@ jobs:
     timeout-minutes: 10
     strategy:
       matrix:
-        super-linter-version: [ ${{ github.event_name == 'workflow_call' && 'super-linter/super-linter@' + inputs.linter-version || 'super-linter/super-linter@main' }} ]
+        super-linter-version:
+          - ${{ github.event_name == 'workflow_call' && 'super-linter/super-linter@' + inputs['linter-version'] || 'super-linter/super-linter@main' }}
 
     ##################
     # Load all steps #
