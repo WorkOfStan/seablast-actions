@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added` for new features
 
+- linter-version - a parameter to change the super-linter version/branch, e.g. `/slim-latest`, `@v7.2.1`, `/slim@v7.2.1`
+
 ### `Changed` for changes in existing functionality
 
 ### `Deprecated` for soon-to-be removed features

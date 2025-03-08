@@ -82,6 +82,8 @@ jobs:
     with:
       # OPTIONAL runner specification
       runs-on: "ubuntu-latest"
+      # an OPTIONAL parameter to change the super-linter version/branch, e.g. '/slim-latest', '@v7.2.1', '/slim@v7.2.1'
+      linter-version: "@main"
 ```
 
 With the release of [Super-Linter](https://github.com/super-linter/super-linter) 7.0.0, [Prettier](https://prettier.io/) has become the standard for many file formats, ensuring consistent code styling across your projects.

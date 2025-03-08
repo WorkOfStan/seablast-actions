@@ -29,6 +29,11 @@ on:
         required: false
         type: string
         default: "ubuntu-latest"
+      linter-version:
+        required: false
+        type: string
+        # This parameter allows you to change the super-linter version/branch, e.g. '/slim-latest', '@v7.2.1', '/slim@v7.2.1'
+        default: "@main"
 
 permissions:
   contents: read
@@ -62,14 +67,32 @@ jobs:
         run: git pull origin ${{ github.ref }}
         shell: bash
 
+      # Dump the GitHub variables
+      - name: Dump GitHub Variables
+        run: |
+          echo "GitHub Event Name: ${{ github.event_name }}"
+        env:
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          GITHUB_EVENT_PULL_REQUEST_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          GITHUB_EVENT_PULL_REQUEST_BASE_NAME: ${{ github.event.pull_request.base.name }}
+        shell: bash
+
       ################################
       # Run Linter against code base #
       ################################
-      - name: Lint Code Base
-        uses: super-linter/super-linter@main
+      # The `uses` field is processed before any runtime expressions are evaluated. As a result, even if you define an environment variable or output, you can’t reference it in the `uses` field.
+      # This restriction forces us to either hardcode the version or use conditional steps with static strings.      
+      # When your workflow is triggered via a workflow_call, the inputs (like inputs.linter-version) are available for use in expressions throughout the workflow (for example, in environment variables or conditionals).
+      # However, the `uses` field in a step is processed very early—before runtime—so it requires a static string.
+      - name: Lint Code Base (Workflow Call)
+        if: ${{ github.event_name == 'workflow_call' }}
+        uses: super-linter/super-linter${{ inputs.linter-version }}
         env:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
+          FILTER_REGEX_EXCLUDE: '.*\/vendor\/.*'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml
           #SHELL_SHFMT_FILE_NAME: .shfmt
@@ -83,7 +106,34 @@ jobs:
           VALIDATE_JAVASCRIPT_STANDARD: false
           # TODO VALIDATE_JSCPD later
           VALIDATE_JSCPD: false
-          # PHPStan run in matrix strategy in php-composer-phpunit.yml
+          # PHPStan run in matrix strategy in php-composer-dependencies-reusable.yml
+          VALIDATE_PHP_PHPSTAN: false
+          VALIDATE_PHP_PSALM: false
+          # 240519 .shfmt is not taken into account, so far
+          VALIDATE_SHELL_SHFMT: false
+
+      # Step for push/pull_request events, using a fixed linter version
+      - name: Lint Code Base (Default)
+        if: ${{ github.event_name != 'workflow_call' }}
+        uses: super-linter/super-linter@main
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
+          FILTER_REGEX_EXCLUDE: '.*\/vendor\/.*'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml
+          #SHELL_SHFMT_FILE_NAME: .shfmt
+          VALIDATE_ANSIBLE: false
+          VALIDATE_CSS: false
+          # TODO 211017 VALIDATE_GITHUB_ACTIONS returns false positive `unknown Webhook event "workflow_call"`
+          #VALIDATE_GITHUB_ACTIONS: false # 240519 is workflow_call understood?
+          # TODO 211003 returns false positive: {"line":"                    <li><a href=\"https://www.linkedin.com/company/MYCMSPROJECTSPECIFIC\" title=\"{=\"MYCMSPROJECTSPECIFIC na LinkedIn\"|translate}\"><i class=\"fa fa-linkedin\" aria-hidden=\"true\"></i></a></li>","lineNumber":56,"offender":"linkedin.com/company/MYCMSPROJECTSPECIFIC","offenderEntropy":-1,"commit":"","repo":"","repoURL":"","leakURL":"","rule":"LinkedIn Secret Key","commitMessage":"","author":"","email":"","file":".","date":"0001-01-01T00:00:00Z","tags":"secret, LinkedIn"}
+          VALIDATE_GITLEAKS: false
+          # 240803, there's no way to configure JAVASCRIPT_PRETTIER, neither it shows what exactly an issue is. Just 'Code style issue found in file.', which is useless.
+          VALIDATE_JAVASCRIPT_STANDARD: false
+          # TODO VALIDATE_JSCPD later
+          VALIDATE_JSCPD: false
+          # PHPStan run in matrix strategy in php-composer-dependencies-reusable.yml
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false
           # 240519 .shfmt is not taken into account, so far
