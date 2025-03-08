@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Changed` for changes in existing functionality
 
+- linter.yml uses: `super-linter/super-linter/slim@latest` (instead of `super-linter/super-linter@main`)
+
 ### `Deprecated` for soon-to-be removed features
 
 ### `Removed` for now removed features
