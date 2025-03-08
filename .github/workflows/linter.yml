@@ -83,12 +83,12 @@ jobs:
       # Run Linter against code base #
       ################################
       # The `uses` field is processed before any runtime expressions are evaluated. As a result, even if you define an environment variable or output, you can’t reference it in the `uses` field.
-      # This restriction forces us to either hardcode the version or use conditional steps with static strings.      
+      # This restriction forces us to either hardcode the version or use conditional steps with static strings.
       # When your workflow is triggered via a workflow_call, the inputs (like inputs.linter-version) are available for use in expressions throughout the workflow (for example, in environment variables or conditionals).
       # However, the `uses` field in a step is processed very early—before runtime—so it requires a static string.
       - name: Lint Code Base (Workflow Call)
         if: ${{ github.event_name == 'workflow_call' }}
-        uses: super-linter/super-linter${{ inputs.linter-version }}
+        uses: super-linter/super-linter${{ inputs['linter-version'] }}
         env:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
