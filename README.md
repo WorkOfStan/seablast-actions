@@ -82,14 +82,12 @@ jobs:
     with:
       # OPTIONAL runner specification
       runs-on: "ubuntu-latest"
-      # an OPTIONAL parameter to change the super-linter version/branch, e.g. '/slim-latest', '@v7.2.1', '/slim@v7.2.1'
-      linter-version: "@main"
 ```
 
 With the release of [Super-Linter](https://github.com/super-linter/super-linter) 7.0.0, [Prettier](https://prettier.io/) has become the standard for many file formats, ensuring consistent code styling across your projects.
 Embrace this change and keep your codebase looking sharp by integrating Prettier directly into your workflow: [prettier-fix](https://github.com/marketplace/actions/prettier-fix).
 
-It's not possible to select super-linter version through a parameter, as the `uses` field expects a static string, so at least `super-linter/super-linter/slim@latest` (instead of `super-linter/super-linter@main`)
+Note: It's not possible to select super-linter version through a parameter, as the `uses` field expects a static string, so at least `super-linter/super-linter/slim@latest` (instead of `super-linter/super-linter@main`)
 is used for sake of efficiency as these linters are not used in PHP anyway: Rustfmt, Rust Clippy, Azure Resource Manager Template Toolkit (arm-ttk), PSScriptAnalyzer, dotnet (.NET) commands and subcommands.
 
 ### SHFMT notes

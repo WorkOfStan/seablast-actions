@@ -9,11 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added` for new features
 
-- linter-version - a parameter to change the super-linter version/branch, e.g. `/slim-latest`, `@v7.2.1`, `/slim@v7.2.1`
-
 ### `Changed` for changes in existing functionality
-
-- linter.yml uses: `super-linter/super-linter/slim@latest` (instead of `super-linter/super-linter@main`)
 
 ### `Deprecated` for soon-to-be removed features
 
@@ -22,6 +18,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Fixed` for any bugfixes
 
 ### `Security` in case of vulnerabilities
+
+## [0.2.3] - 2025-03-09
+
+Uses super-linter:v7.2.1 which doesn't invoke composer.
+
+### Added
+
+- Dump GitHub Variables for debugging
+
+### Fixed
+
+- linter.yml uses: `super-linter/super-linter/slim@v7.2.1` (instead of `super-linter/super-linter@main`) as v7.3.0 has a bug - composer expects PHP extensions that are not installed within super-linter environment
 
 ## [0.2.2] - 2025-02-21
 
@@ -89,7 +97,8 @@ Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.2...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.3...HEAD
+[0.2.3]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2...v0.2.1
 [0.2]: https://github.com/WorkOfStan/seablast-actions/compare/v0.1.1...v0.2
