@@ -62,14 +62,27 @@ jobs:
         run: git pull origin ${{ github.ref }}
         shell: bash
 
+      # Dump the GitHub variables
+      - name: Dump GitHub Variables
+        run: |
+          echo "GitHub Event Name: ${{ github.event_name }}"
+        env:
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          GITHUB_EVENT_PULL_REQUEST_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          GITHUB_EVENT_PULL_REQUEST_BASE_NAME: ${{ github.event.pull_request.base.name }}
+        shell: bash
+
       ################################
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: super-linter/super-linter@main
+        uses: super-linter/super-linter/slim@v7.2.1
         env:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
+          FILTER_REGEX_EXCLUDE: '.*\/vendor\/.*'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml
           #SHELL_SHFMT_FILE_NAME: .shfmt
@@ -83,7 +96,7 @@ jobs:
           VALIDATE_JAVASCRIPT_STANDARD: false
           # TODO VALIDATE_JSCPD later
           VALIDATE_JSCPD: false
-          # PHPStan run in matrix strategy in php-composer-phpunit.yml
+          # PHPStan run in matrix strategy in php-composer-dependencies-reusable.yml
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false
           # 240519 .shfmt is not taken into account, so far
