@@ -84,8 +84,7 @@ jobs:
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        # pinned to a hash (required by blanket policy)
-        uses: super-linter/super-linter/slim@ffde3b2b33b745cb612d787f669ef9442b1339a6 # v8.1.0
+        uses: super-linter/super-linter/slim@v8.1.0
         env:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
@@ -105,6 +104,5 @@ jobs:
           # 240519 .shfmt is not taken into account, so far
           VALIDATE_SHELL_SHFMT: false
 
-      - name: Zizmor diff
-        run: git diff
-
+      - name: Show linter changes (staged + unstaged)
+        run: git diff HEAD --no-color
