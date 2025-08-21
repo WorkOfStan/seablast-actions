@@ -49,11 +49,12 @@ jobs:
     runs-on: "${{ inputs.runs-on || 'ubuntu-latest' }}"
     # Limit the running time
     timeout-minutes: 10
+
     strategy:
       matrix:
         # Use underscore so we can access with dot-notation.
         # Also make it work on push/PR (no inputs) via the || fallback.
-        linter_version: ["${{ inputs.linter-version || 'v7.2.1' }}"]
+        linter_version: [ ${{ inputs.linter-version || 'v7.2.1' }} ]
 
     ##################
     # Load all steps #
@@ -89,7 +90,7 @@ jobs:
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: super-linter/super-linter/slim@${{ matrix.linter_version }}
+        uses: super-linter/super-linter/slim@"${{ matrix.linter_version }}"
         env:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
@@ -99,8 +100,6 @@ jobs:
           #SHELL_SHFMT_FILE_NAME: .shfmt
           VALIDATE_ANSIBLE: false
           VALIDATE_CSS: false
-          # TODO 211017 VALIDATE_GITHUB_ACTIONS returns false positive `unknown Webhook event "workflow_call"`
-          #VALIDATE_GITHUB_ACTIONS: false # 240519 is workflow_call understood?
           # TODO 211003 returns false positive: {"line":"                    <li><a href=\"https://www.linkedin.com/company/MYCMSPROJECTSPECIFIC\" title=\"{=\"MYCMSPROJECTSPECIFIC na LinkedIn\"|translate}\"><i class=\"fa fa-linkedin\" aria-hidden=\"true\"></i></a></li>","lineNumber":56,"offender":"linkedin.com/company/MYCMSPROJECTSPECIFIC","offenderEntropy":-1,"commit":"","repo":"","repoURL":"","leakURL":"","rule":"LinkedIn Secret Key","commitMessage":"","author":"","email":"","file":".","date":"0001-01-01T00:00:00Z","tags":"secret, LinkedIn"}
           VALIDATE_GITLEAKS: false
           # 240803, there's no way to configure JAVASCRIPT_PRETTIER, neither it shows what exactly an issue is. Just 'Code style issue found in file.', which is useless.
