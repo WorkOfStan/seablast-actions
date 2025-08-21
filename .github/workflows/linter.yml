@@ -104,3 +104,7 @@ jobs:
           VALIDATE_PHP_PSALM: false
           # 240519 .shfmt is not taken into account, so far
           VALIDATE_SHELL_SHFMT: false
+
+      - name: Zizmor diff
+        run: git diff
+
