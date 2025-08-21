@@ -106,3 +106,8 @@ jobs:
 
       - name: Show linter changes (staged + unstaged)
         run: git diff HEAD --no-color
+      - name: Stage modified files
+        run: git add -A
+
+      - name: Show linter changes vs. HEAD
+        run: git diff --cached --no-color
