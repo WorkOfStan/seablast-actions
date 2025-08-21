@@ -54,7 +54,7 @@ jobs:
       matrix:
         # Use underscore so we can access with dot-notation.
         # Also make it work on push/PR (no inputs) via the || fallback.
-        linter_version: [ ${{ inputs.linter-version || 'v7.2.1' }} ]
+        linter_version: ["${{ inputs.linter-version || 'v7.2.1' }}"]
 
     ##################
     # Load all steps #
