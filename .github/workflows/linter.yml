@@ -51,7 +51,7 @@ jobs:
     timeout-minutes: 10
     strategy:
       matrix:
-        linter-version: [ "${{ inputs.linter-version }}" ]
+        linter-version: ["${{ inputs.linter-version }}"]
 
     ##################
     # Load all steps #
