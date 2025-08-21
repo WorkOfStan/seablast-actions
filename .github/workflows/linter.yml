@@ -26,10 +26,6 @@ on:
       - "notest/**"
   workflow_call:
     inputs:
-      linter-version:
-        required: false
-        type: string
-        default: "v7.2.1"
       runs-on:
         required: false
         type: string
@@ -49,12 +45,6 @@ jobs:
     runs-on: "${{ inputs.runs-on || 'ubuntu-latest' }}"
     # Limit the running time
     timeout-minutes: 10
-
-    strategy:
-      matrix:
-        # Use underscore so we can access with dot-notation.
-        # Also make it work on push/PR (no inputs) via the || fallback.
-        linter_version: ["${{ inputs.linter-version || 'v7.2.1' }}"]
 
     ##################
     # Load all steps #
@@ -90,7 +80,7 @@ jobs:
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: super-linter/super-linter/slim@${{ matrix.linter_version }}
+        uses: super-linter/super-linter/slim@v8.1.0
         env:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
