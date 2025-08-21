@@ -1,6 +1,5 @@
 ---
-rules: {}
-
-checks:
-  unpinned-uses:
-    enabled: false # disables the check - i.e. allows refering to version instead of an exact hash
+rules: 
+  checks:
+    unpinned-uses:
+      enabled: false # disables the check - i.e. allows refering to version instead of an exact hash
