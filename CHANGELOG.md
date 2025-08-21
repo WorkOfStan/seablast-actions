@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added` for new features
 
+- .eslintrc.yml (compliant to Prettier rules) because it is required by super-linter/v8.x.x
+
 ### `Changed` for changes in existing functionality
 
 - feat: super-linter slim version (linter.yml) moved from v7.2.1 to v8.1.0
