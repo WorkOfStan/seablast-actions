@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Changed` for changes in existing functionality
 
 - feat: super-linter slim version (linter.yml) moved from v7.2.1 to v8.1.0
+  - zizmor.yaml disables the unpinned-uses check - i.e. allows refering to version instead of an exact hash
 - bump actions/checkout@v4 to v5
 - allow VALIDATE_CSS in linter.yml as the Prettier must be applied anyway.
 
@@ -29,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-fix: git pull origin doesn't work with `refs/pull/*`
+fix: `git pull origin` doesn't work with `refs/pull/*`
 
 ## [0.2.3] - 2025-03-09
 
