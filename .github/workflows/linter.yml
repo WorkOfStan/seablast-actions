@@ -90,6 +90,7 @@ jobs:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
           FILTER_REGEX_EXCLUDE: '.*\/vendor\/.*'
+          FIX_GITHUB_ACTIONS_ZIZMOR: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml
           #SHELL_SHFMT_FILE_NAME: .shfmt
