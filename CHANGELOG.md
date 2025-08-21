@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Changed` for changes in existing functionality
 
+- feat: super-linter slim version (linter.yml) is be parametric, default = v7.2.1
+- bump actions/checkout@v4 to v5
+
 ### `Deprecated` for soon-to-be removed features
 
 ### `Removed` for now removed features
@@ -18,6 +21,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Fixed` for any bugfixes
 
 ### `Security` in case of vulnerabilities
+
+## [0.2.4] - 2025-07-05
+
+### Fixed
+
+fix: git pull origin doesn't work with `refs/pull/*`
 
 ## [0.2.3] - 2025-03-09
 
@@ -97,7 +106,8 @@ Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.3...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.4...HEAD
+[0.2.4]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2...v0.2.1

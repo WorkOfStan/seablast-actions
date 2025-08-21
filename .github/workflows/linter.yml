@@ -5,6 +5,7 @@
 ###########################
 ###########################
 name: Lint Code Base
+# Variant slim - see: https://github.com/super-linter/super-linter?tab=readme-ov-file#super-linter-variants
 
 #
 # Documentation:
@@ -25,6 +26,10 @@ on:
       - "notest/**"
   workflow_call:
     inputs:
+      linter-version:
+        required: false
+        type: string
+        default: "v7.2.1"
       runs-on:
         required: false
         type: string
@@ -44,6 +49,9 @@ jobs:
     runs-on: "${{ inputs.runs-on || 'ubuntu-latest' }}"
     # Limit the running time
     timeout-minutes: 10
+    strategy:
+      matrix:
+        linter-version: [ "${{ inputs.linter-version }}" ]
 
     ##################
     # Load all steps #
@@ -53,7 +61,7 @@ jobs:
       # Checkout the code base #
       ##########################
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.ref }}
           fetch-depth: 0 # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
@@ -79,7 +87,7 @@ jobs:
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: super-linter/super-linter/slim@v7.2.1
+        uses: super-linter/super-linter/slim@${{ matrix.linter-version }}
         env:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
