@@ -34,6 +34,7 @@ jobs:
           SAVE_SUPER_LINTER_OUTPUT: true
 
       - name: Show what changed
+        if: ${{ failure() && steps.lint.outcome == 'failure' }}
         run: |
           echo "Changed files:"
           git status --porcelain
