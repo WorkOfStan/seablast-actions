@@ -1,0 +1,59 @@
+---
+name: Lint & Fix
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: write      # kvůli commitu fixů
+  statuses: write      # status checks
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Super-Linter (fix mode)
+        uses: super-linter/super-linter@v8.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          # ⇣ zapni jen to, co chceš opravovat
+          FIX_YAML_PRETTIER: true
+          FIX_JAVASCRIPT_PRETTIER: true
+          FIX_JAVASCRIPT_ESLINT: true
+          FIX_SHELL_SHFMT: true
+
+          # užitečné výstupy
+          ENABLE_GITHUB_ACTIONS_STEP_SUMMARY: true
+          SAVE_SUPER_LINTER_OUTPUT: true
+
+      - name: Show what changed
+        run: |
+          echo "Changed files:"
+          git status --porcelain
+          echo
+          echo "Diff:"
+          git diff
+
+      - name: Commit & push fixes (only on PRs, not default branch)
+        if: >
+          github.event_name == 'pull_request' &&
+          github.ref_name != github.event.repository.default_branch
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: ${{ github.event.pull_request.head.ref || github.head_ref || github.ref }}
+          commit_message: "chore: apply super-linter fixes"
+          commit_user_name: super-linter
+          commit_user_email: super-linter@super-linter.dev
+
+      - name: Upload linter outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: super-linter-output
+          path: super-linter-output/
+          if-no-files-found: ignore
