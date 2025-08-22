@@ -1,12 +1,29 @@
 ---
-- name: Super-Linter (fix mode)
+name: Lint & Fix
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: write      # kvůli commitu fixů
+  statuses: write      # status checks
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Super-Linter (fix mode)
         id: lint
         uses: super-linter/super-linter@v8.1.0
-        continue-on-error: true          # <<< linter step doběhne vždy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FIX_YAML_PRETTIER: true
           FIX_GITHUB_ACTIONS_ZIZMOR: true
+          FIX_YAML_PRETTIER: true
           FIX_JAVASCRIPT_PRETTIER: true
           FIX_JAVASCRIPT_ESLINT: true
           FIX_SHELL_SHFMT: true
@@ -14,24 +31,27 @@
           SAVE_SUPER_LINTER_OUTPUT: true
 
       - name: Show what changed
+        if: ${{ always() }}              # <<< klíčové
         run: |
           git status --porcelain
           git -c color.ui=always diff
 
       - name: Commit & push fixes (only on PRs)
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ always() && github.event_name == 'pull_request' }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: ${{ github.head_ref || github.ref_name }}
           commit_message: "chore: apply super-linter fixes"
 
       - name: Upload linter outputs
+        if: ${{ always() }}              # <<< klíčové
         uses: actions/upload-artifact@v4
         with:
           name: super-linter-output
           path: super-linter-output/
           if-no-files-found: ignore
 
-      - name: Fail job if linter reported errors
-        if: ${{ steps.lint.outcome == 'failure' }}
+      # volitelné: na konci schválně failnout job, pokud linter padl
+      - name: Fail job when linter failed
+        if: ${{ failure() && steps.lint.outcome == 'failure' }}
         run: exit 1
