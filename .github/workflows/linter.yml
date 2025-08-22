@@ -92,7 +92,7 @@ jobs:
           FIX_GITHUB_ACTIONS_ZIZMOR: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml
-          SAVE_SUPER_LINTER_OUTPUT: true
+          #SAVE_SUPER_LINTER_OUTPUT: true
           #SHELL_SHFMT_FILE_NAME: .shfmt
           VALIDATE_ANSIBLE: false
           # TODO 211003 returns false positive: {"line":"                    <li><a href=\"https://www.linkedin.com/company/MYCMSPROJECTSPECIFIC\" title=\"{=\"MYCMSPROJECTSPECIFIC na LinkedIn\"|translate}\"><i class=\"fa fa-linkedin\" aria-hidden=\"true\"></i></a></li>","lineNumber":56,"offender":"linkedin.com/company/MYCMSPROJECTSPECIFIC","offenderEntropy":-1,"commit":"","repo":"","repoURL":"","leakURL":"","rule":"LinkedIn Secret Key","commitMessage":"","author":"","email":"","file":".","date":"0001-01-01T00:00:00Z","tags":"secret, LinkedIn"}
@@ -104,15 +104,9 @@ jobs:
           VALIDATE_PHP_PSALM: false
           # 240519 .shfmt is not taken into account, so far
           VALIDATE_SHELL_SHFMT: false
-      - name: Quick status + recent commits
-        run: |
-          git status
-          echo
-          git log --oneline --decorate -n 5
-      - name: Show linter changes (staged + unstaged)
-        run: git diff HEAD --no-color
-      - name: Stage modified files
-        run: git add -A
 
-      - name: Show linter changes vs. HEAD
-        run: git diff --cached --no-color
+      - name: Show what changed
+        if: ${{ always() }} # show git diff even if super-linter failed
+        run: |
+          git status --porcelain
+          git -c color.ui=always diff
