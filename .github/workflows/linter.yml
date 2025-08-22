@@ -137,11 +137,11 @@ jobs:
         if: ${{ failure() }}
         run: |
           if git diff --quiet; then
-            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             ## `--binary` includes also EOL and EOF newline changes
             git diff --binary --no-color HEAD > lint-fixes.patch
-            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "changed=true" >> "$GITHUB_OUTPUT"
             ls -l lint-fixes.patch
           fi
 
