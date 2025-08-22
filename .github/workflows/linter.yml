@@ -69,6 +69,12 @@ jobs:
           GITHUB_REF: ${{ github.ref }}
           #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Temporarily rename composer.json (to prevent invoking composer within super-linter)
+        if: ${{ hashFiles('composer.json') != '' }} # only if composer.json exists
+        run: |
+          mv composer.json "action-${{ github.run_id }}.composer.json"
+          echo "RENAMED_FILE=action-${{ github.run_id }}.composer.json" >> "$GITHUB_ENV"
+
       # Dump the GitHub variables
       - name: Dump GitHub Variables
         run: |
@@ -119,6 +125,10 @@ jobs:
           # PHPStan run in matrix strategy in php-composer-dependencies-reusable.yml
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false
+
+      - name: Restore composer.json
+        if: ${{ env.RENAMED_FILE != '' && hashFiles(env.RENAMED_FILE) != '' }}
+        run: mv "$RENAMED_FILE" composer.json
 
       - name: Show what changed
         if: ${{ failure() }} # show `git diff` if super-linter failed

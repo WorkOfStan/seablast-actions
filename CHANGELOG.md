@@ -32,6 +32,7 @@ feat: super-linter fixes can be downloaded as an artifact
   - `VALIDATE_JAVASCRIPT_ES: false` because Prettier is applied anyway and I don't want to have `.eslintrc.yml` configured
 - bump actions/checkout@v4 to v5
 - allow VALIDATE_CSS in linter.yml as the Prettier must be applied anyway.
+- linter.yml: Temporarily rename composer.json (and then back) to prevent invoking composer within super-linter, as various libraries would be expected that are not part of super-linter environment.
 
 ## [0.2.4] - 2025-07-05
 
