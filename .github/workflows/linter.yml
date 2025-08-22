@@ -103,7 +103,11 @@ jobs:
           VALIDATE_PHP_PSALM: false
           # 240519 .shfmt is not taken into account, so far
           VALIDATE_SHELL_SHFMT: false
-
+      - name: Quick status + recent commits
+        run: |
+          git status
+          echo
+          git log --oneline --decorate -n 5
       - name: Show linter changes (staged + unstaged)
         run: git diff HEAD --no-color
       - name: Stage modified files
