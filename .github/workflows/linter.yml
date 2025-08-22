@@ -115,7 +115,6 @@ jobs:
           JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml
           #SAVE_SUPER_LINTER_OUTPUT: true
           #SHELL_SHFMT_FILE_NAME: .shfmt
-          VALIDATE_ANSIBLE: false
           # TODO 211003 returns false positive: {"line":"                    <li><a href=\"https://www.linkedin.com/company/MYCMSPROJECTSPECIFIC\" title=\"{=\"MYCMSPROJECTSPECIFIC na LinkedIn\"|translate}\"><i class=\"fa fa-linkedin\" aria-hidden=\"true\"></i></a></li>","lineNumber":56,"offender":"linkedin.com/company/MYCMSPROJECTSPECIFIC","offenderEntropy":-1,"commit":"","repo":"","repoURL":"","leakURL":"","rule":"LinkedIn Secret Key","commitMessage":"","author":"","email":"","file":".","date":"0001-01-01T00:00:00Z","tags":"secret, LinkedIn"}
           VALIDATE_GITLEAKS: false
           # TODO VALIDATE_JSCPD later
@@ -127,23 +126,34 @@ jobs:
           VALIDATE_SHELL_SHFMT: false
 
       - name: Show what changed
-        #if: ${{ always() }} # show `git diff` even if super-linter failed
         if: ${{ failure() }} # show `git diff` if super-linter failed
         run: |
           git status --porcelain
           git -c color.ui=always diff
-          # Create patch file
-          git diff HEAD > lint-fixes.patch
+
+      - name: Create patch if there are changes
+        id: patch
+        if: ${{ failure() }}
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            ## `--binary` includes also EOL and EOF newline changes
+            git diff --binary --no-color HEAD > lint-fixes.patch
+            echo "changed=true" >> $GITHUB_OUTPUT
+            ls -l lint-fixes.patch
+          fi
 
       - name: Upload patch artifact
-        if: ${{ failure() && hashFiles('lint-fixes.patch') != '' }} # if super-linter failed and lint-fixes.patch exists
+        if: ${{ failure() && steps.patch.outputs.changed == 'true' }} # if super-linter failed and lint-fixes.patch exists
         uses: actions/upload-artifact@v4
         with:
           name: lint-fixes
           path: lint-fixes.patch
+          if-no-files-found: error
           # Then you can apply it locally with:
           # git apply lint-fixes.patch
 
       - name: Inform about patch artifact
-        if: ${{ failure() && hashFiles('lint-fixes.patch') != '' }} # if super-linter failed and lint-fixes.patch exists
-        run: echo "::notice title=lint-fixes artifact ready::You can apply locally with `git apply lint-fixes.patch`"
+        if: ${{ failure() && steps.patch.outputs.changed == 'true' }}
+        run: echo "::notice title=lint-fixes artifact ready::You can apply locally with 'git apply lint-fixes.patch'"
