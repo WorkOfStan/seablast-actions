@@ -26,6 +26,7 @@ jobs:
           ref: ${{ github.ref }}
           fetch-depth: 0 # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
           persist-credentials: false
+
       # Fetch latest changes (even by previous job)
       - name: Fetch latest changes
         run: git pull origin ${{ github.ref }}

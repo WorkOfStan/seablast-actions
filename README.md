@@ -89,6 +89,7 @@ Embrace this change and keep your codebase looking sharp by integrating Prettier
 
 Note 1: It's not possible to select super-linter version through a parameter, as the `uses` field expects a static string.
 Note 2: slim [variant](https://github.com/super-linter/super-linter?tab=readme-ov-file#super-linter-variants) is used for sake of efficiency as these linters are not used in PHP anyway: Rustfmt, Rust Clippy, Azure Resource Manager Template Toolkit (arm-ttk), PSScriptAnalyzer, dotnet (.NET) commands and subcommands.
+Note 3: Many FIXes are applied automatically and their result can be downloaded as an artifact and then use locally with `git apply lint-fixes.patch`. If the change is in the `.github/workflows`, it can't be commited by a GitHub Action anyway.
 
 ### SHFMT notes
 

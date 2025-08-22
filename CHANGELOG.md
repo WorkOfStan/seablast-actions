@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - feat: super-linter slim version (linter.yml) moved from v7.2.1 to v8.1.0
   - zizmor.yaml disables the unpinned-uses check - i.e. allows refering to version instead of an exact hash
+  - many FIXes are applied automatically and their result can be downloaded as an artifact and then use locally with `git apply lint-fixes.patch`
 - bump actions/checkout@v4 to v5
 - allow VALIDATE_CSS in linter.yml as the Prettier must be applied anyway.
 
