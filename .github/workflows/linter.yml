@@ -113,18 +113,11 @@ jobs:
           FIX_SQLFLUFF: true
           FIX_YAML_PRETTIER: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml
-          #SAVE_SUPER_LINTER_OUTPUT: true
-          #SHELL_SHFMT_FILE_NAME: .shfmt
           # TODO 211003 returns false positive: {"line":"                    <li><a href=\"https://www.linkedin.com/company/MYCMSPROJECTSPECIFIC\" title=\"{=\"MYCMSPROJECTSPECIFIC na LinkedIn\"|translate}\"><i class=\"fa fa-linkedin\" aria-hidden=\"true\"></i></a></li>","lineNumber":56,"offender":"linkedin.com/company/MYCMSPROJECTSPECIFIC","offenderEntropy":-1,"commit":"","repo":"","repoURL":"","leakURL":"","rule":"LinkedIn Secret Key","commitMessage":"","author":"","email":"","file":".","date":"0001-01-01T00:00:00Z","tags":"secret, LinkedIn"}
           VALIDATE_GITLEAKS: false
-          # TODO VALIDATE_JSCPD later
-          VALIDATE_JSCPD: false
           # PHPStan run in matrix strategy in php-composer-dependencies-reusable.yml
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false
-          # 240519 .shfmt is not taken into account, so far
-          #VALIDATE_SHELL_SHFMT: false
 
       - name: Show what changed
         if: ${{ failure() }} # show `git diff` if super-linter failed
