@@ -67,7 +67,7 @@ jobs:
         shell: bash
         env:
           GITHUB_REF: ${{ github.ref }}
-          #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Dump the GitHub variables
       - name: Dump GitHub Variables

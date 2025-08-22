@@ -71,6 +71,7 @@ jobs:
         shell: bash
         env:
           GITHUB_REF: ${{ github.ref }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Install PHP ${{ matrix.php-version }} Test on ${{ runner.os }}"
         uses: "shivammathur/setup-php@v2"
