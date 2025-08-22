@@ -123,7 +123,7 @@ jobs:
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false
           # 240519 .shfmt is not taken into account, so far
-          VALIDATE_SHELL_SHFMT: false
+          #VALIDATE_SHELL_SHFMT: false
 
       - name: Show what changed
         if: ${{ failure() }} # show `git diff` if super-linter failed
