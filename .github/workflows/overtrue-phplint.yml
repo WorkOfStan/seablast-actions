@@ -31,6 +31,8 @@ jobs:
       - name: Fetch latest changes
         run: git pull origin "${GITHUB_REF}"
         shell: bash
+        env:
+          GITHUB_REF: ${{ github.ref }}
 
       - name: Check PHP syntax errors
         uses: overtrue/phplint@9.6.2

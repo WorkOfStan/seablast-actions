@@ -69,6 +69,8 @@ jobs:
         if: ${{ !startsWith(github.ref, 'refs/pull/') }}
         run: git pull origin "${GITHUB_REF}"
         shell: bash
+        env:
+          GITHUB_REF: ${{ github.ref }}
 
       - name: "Install PHP ${{ matrix.php-version }} Test on ${{ runner.os }}"
         uses: "shivammathur/setup-php@v2"
