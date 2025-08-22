@@ -25,6 +25,7 @@ jobs:
           # ⇣ zapni jen to, co chceš opravovat
           FIX_YAML_PRETTIER: true
           FIX_JAVASCRIPT_PRETTIER: true
+          FIX_GITHUB_ACTIONS_ZIZMOR: true
           FIX_JAVASCRIPT_ESLINT: true
           FIX_SHELL_SHFMT: true
 
