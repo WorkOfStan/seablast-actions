@@ -155,5 +155,5 @@ jobs:
           # git apply lint-fixes.patch
 
       - name: Inform about patch artifact
-        if: ${{ failure() && steps.patch.outputs.changed == 'true' }}
+        if: ${{ failure() && steps.patch.outputs.changed == 'true' && hashFiles('lint-fixes.patch') != '' }}
         run: echo "::notice title=lint-fixes artifact ready::You can apply locally with 'git apply lint-fixes.patch'"

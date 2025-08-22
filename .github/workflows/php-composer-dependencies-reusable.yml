@@ -62,10 +62,12 @@ jobs:
         with:
           ref: ${{ github.ref }}
           fetch-depth: 0 # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
+          persist-credentials: false
+
       # Fetch latest changes (even by previous job)
       - name: Fetch latest changes
         if: ${{ !startsWith(github.ref, 'refs/pull/') }}
-        run: git pull origin ${{ github.ref }}
+        run: git pull origin ${GITHUB_REF}
         shell: bash
 
       - name: "Install PHP ${{ matrix.php-version }} Test on ${{ runner.os }}"
@@ -150,8 +152,11 @@ jobs:
       # to fix `Constant DB_USERNAME not found.` etc not only for phpstan but also for phpunit tests
       - name: Copy local config files
         if: steps.check_files_configlocaldist.outputs.files_exists == 'true'
-        run: cp -p "${{ inputs.phpdist-config }}" "${{ inputs.phplocal-config }}"
+        run: cp -p "${INPUTS_PHPDIST_CONFIG}" "${INPUTS_PHPLOCAL_CONFIG}"
         shell: bash
+        env:
+          INPUTS_PHPDIST_CONFIG: ${{ inputs.phpdist-config }}
+          INPUTS_PHPLOCAL_CONFIG: ${{ inputs.phplocal-config }}
 
       - name: Copy local testing database settings
         if: steps.check_files_database.outputs.files_exists == 'true'
