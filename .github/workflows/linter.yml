@@ -59,10 +59,11 @@ jobs:
           ref: ${{ github.ref }}
           fetch-depth: 0 # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
           persist-credentials: false # safer: token not left in git config
+
       # Fetch latest changes (even by previous job)
       - name: Fetch latest changes
         if: ${{ !startsWith(github.ref, 'refs/pull/') }}
-        run: git pull --ff-only origin "$GITHUB_REF"
+        run: git pull --ff-only origin "${GITHUB_REF}"
         shell: bash
         env:
           GITHUB_REF: ${{ github.ref }}

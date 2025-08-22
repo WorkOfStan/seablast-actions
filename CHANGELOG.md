@@ -9,15 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added` for new features
 
-- .eslintrc.yml (compliant to Prettier rules) because it is required by super-linter/v8.x.x
-
 ### `Changed` for changes in existing functionality
-
-- feat: super-linter slim version (linter.yml) moved from v7.2.1 to v8.1.0
-  - zizmor.yaml disables the unpinned-uses check - i.e. allows refering to version instead of an exact hash
-  - many FIXes are applied automatically and their result can be downloaded as an artifact and then use locally with `git apply lint-fixes.patch`
-- bump actions/checkout@v4 to v5
-- allow VALIDATE_CSS in linter.yml as the Prettier must be applied anyway.
 
 ### `Deprecated` for soon-to-be removed features
 
@@ -26,6 +18,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Fixed` for any bugfixes
 
 ### `Security` in case of vulnerabilities
+
+## [0.2.5] - 2025-08-23
+
+feat: super-linter fixes can be downloaded as an artifact
+
+### Added
+
+- .eslintrc.yml (compliant to Prettier rules) because it is required by super-linter/v8.x.x
+
+### Changed
+
+- feat: super-linter slim version (linter.yml) moved from v7.2.1 to v8.1.0
+  - zizmor.yaml disables the unpinned-uses check - i.e. allows refering to version instead of an exact hash
+  - many FIXes are applied automatically and their result can be downloaded as an artifact and then use locally with `git apply lint-fixes.patch`
+- bump actions/checkout@v4 to v5
+- allow VALIDATE_CSS in linter.yml as the Prettier must be applied anyway.
 
 ## [0.2.4] - 2025-07-05
 
@@ -111,7 +119,8 @@ Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.4...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.5...HEAD
+[0.2.5]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.1...v0.2.2

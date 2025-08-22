@@ -67,7 +67,7 @@ jobs:
       # Fetch latest changes (even by previous job)
       - name: Fetch latest changes
         if: ${{ !startsWith(github.ref, 'refs/pull/') }}
-        run: git pull origin ${GITHUB_REF}
+        run: git pull origin "${GITHUB_REF}"
         shell: bash
 
       - name: "Install PHP ${{ matrix.php-version }} Test on ${{ runner.os }}"
