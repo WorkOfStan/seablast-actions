@@ -96,7 +96,6 @@ jobs:
           FIX_ENV: true
           FIX_GITHUB_ACTIONS_ZIZMOR: true
           FIX_HTML_PRETTIER: true
-          FIX_JAVASCRIPT_ES: true
           FIX_JAVASCRIPT_PRETTIER: true
           FIX_JSON_PRETTIER: true
           FIX_JSON: true
@@ -115,6 +114,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # TODO 211003 returns false positive: {"line":"                    <li><a href=\"https://www.linkedin.com/company/MYCMSPROJECTSPECIFIC\" title=\"{=\"MYCMSPROJECTSPECIFIC na LinkedIn\"|translate}\"><i class=\"fa fa-linkedin\" aria-hidden=\"true\"></i></a></li>","lineNumber":56,"offender":"linkedin.com/company/MYCMSPROJECTSPECIFIC","offenderEntropy":-1,"commit":"","repo":"","repoURL":"","leakURL":"","rule":"LinkedIn Secret Key","commitMessage":"","author":"","email":"","file":".","date":"0001-01-01T00:00:00Z","tags":"secret, LinkedIn"}
           VALIDATE_GITLEAKS: false
+          # Prettier is applied anyway and I don't want to have `.eslintrc.yml` configured
+          VALIDATE_JAVASCRIPT_ES: false
           # PHPStan run in matrix strategy in php-composer-dependencies-reusable.yml
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false
