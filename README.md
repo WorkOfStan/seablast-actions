@@ -95,6 +95,8 @@ Note 3: Many FIXes are applied automatically and their result can be downloaded 
 
 Note 4: composer.json automatically temporarily renamed (and then renamed back) to prevent invoking composer within super-linter, as various libraries would be expected that are not part of super-linter environment.
 
+Note 5: Copy/paste detection with the default threshold 0% is too strict. Todo consider parametric JSCPD_CONFIG_FILE . So far: `VALIDATE_JSCPD: false`
+
 ### SHFMT notes (todo: revise)
 
 Super-linter configuration in [linter.yml](./github/workflows/linter.yml) refering to [.github/linters/.shfmt](.github/linters/.shfmt)

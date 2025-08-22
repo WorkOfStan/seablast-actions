@@ -122,6 +122,8 @@ jobs:
           VALIDATE_GITLEAKS: false
           # Prettier is applied anyway and I don't want to have `.eslintrc.yml` configured
           VALIDATE_JAVASCRIPT_ES: false
+          # Copy/paste detection with the default threshold 0% is too strict. Todo consider parametric JSCPD_CONFIG_FILE
+          VALIDATE_JSCPD: false
           # PHPStan run in matrix strategy in php-composer-dependencies-reusable.yml
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false
