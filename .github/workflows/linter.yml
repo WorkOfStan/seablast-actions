@@ -58,7 +58,7 @@ jobs:
         with:
           ref: ${{ github.ref }}
           fetch-depth: 0 # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
-          persist-credentials: false # safer: token not left in git config
+          persist-credentials: true # git credentials are needed later, `false` would be safer: token not left in git config
 
       # Fetch latest changes (even by previous job)
       - name: Fetch latest changes
@@ -67,7 +67,7 @@ jobs:
         shell: bash
         env:
           GITHUB_REF: ${{ github.ref }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Dump the GitHub variables
       - name: Dump GitHub Variables
