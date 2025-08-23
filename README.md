@@ -82,7 +82,7 @@ jobs:
     with:
       # OPTIONAL runner specification
       runs-on: "ubuntu-latest"
-      # OPTIONAL disable CSS validation
+      # OPTIONAL disable CSS validation, as it pushes for a modern CSS which might not be backward compatible
       validate-css: false
 ```
 
@@ -98,19 +98,6 @@ Note 3: Many FIXes are applied automatically and their result can be downloaded 
 Note 4: composer.json automatically temporarily renamed (and then renamed back) to prevent invoking composer within super-linter, as the environment PHP version (which might not be app relevant) is used and various libraries would be expected that are not part of super-linter environment.
 
 Note 5: Copy/paste detection with the default threshold 0% is too strict. Todo consider parametric JSCPD_CONFIG_FILE . So far: `VALIDATE_JSCPD: false`
-
-### SHFMT notes (todo: revise)
-
-Super-linter configuration in [linter.yml](./github/workflows/linter.yml) refering to [.github/linters/.shfmt](.github/linters/.shfmt)
-
-```yml
-SHELL_SHFMT_FILE_NAME: .shfmt
-```
-
-is ignored in the end, as the code doesn't use the configuration:
-see <https://github.com/super-linter/super-linter/blob/main/lib/functions/linterCommands.sh> -> `LINTER_COMMANDS_ARRAY_SHELL_SHFMT=(shfmt -d)`
-
-And the default is to use 1 TAB as indentations, while the coding standard used here expects 4 spaces, so SHALL_SHFMT validation is turned off.
 
 ## Automatic PHP Code Style improvements
 
