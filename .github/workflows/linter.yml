@@ -97,6 +97,16 @@ jobs:
           GITHUB_EVENT_PULL_REQUEST_BASE_NAME: ${{ github.event.pull_request.base.name }}
         shell: bash
 
+      - name: Prepare linter env (CSS)
+        # because it is not possible to combine VALIDATE_X true and false
+        shell: bash
+        run: |
+          if [ "${{ inputs.validate-css }}" = "true" ]; then
+            echo "FIX_CSS=true" >> "$GITHUB_ENV"
+          else
+            echo "VALIDATE_CSS=false" >> "$GITHUB_ENV"
+          fi
+
       ################################
       # Run Linter against code base #
       ################################
@@ -108,7 +118,6 @@ jobs:
           FILTER_REGEX_EXCLUDE: '.*\/vendor\/.*'
           FIX_ANSIBLE: true
           FIX_CSS_PRETTIER: true
-          FIX_CSS: ${{ inputs.validate-css }}
           FIX_ENV: true
           FIX_GITHUB_ACTIONS_ZIZMOR: true
           FIX_HTML_PRETTIER: true
@@ -129,7 +138,6 @@ jobs:
           FIX_YAML_PRETTIER: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LOG_LEVEL: ${{ inputs.log-level }}
-          VALIDATE_CSS: ${{ inputs.validate-css }}
           # TODO 211003 returns false positive: {"line":"                    <li><a href=\"https://www.linkedin.com/company/MYCMSPROJECTSPECIFIC\" title=\"{=\"MYCMSPROJECTSPECIFIC na LinkedIn\"|translate}\"><i class=\"fa fa-linkedin\" aria-hidden=\"true\"></i></a></li>","lineNumber":56,"offender":"linkedin.com/company/MYCMSPROJECTSPECIFIC","offenderEntropy":-1,"commit":"","repo":"","repoURL":"","leakURL":"","rule":"LinkedIn Secret Key","commitMessage":"","author":"","email":"","file":".","date":"0001-01-01T00:00:00Z","tags":"secret, LinkedIn"}
           VALIDATE_GITLEAKS: false
           # Prettier is applied anyway and I don't want to have `.eslintrc.yml` configured

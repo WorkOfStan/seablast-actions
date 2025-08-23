@@ -80,6 +80,8 @@ jobs:
   call-workflow:
     uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@main
     with:
+      # OPTIONAL Change how much output the script will generate to the console. One of `ERROR`, `WARN`, `NOTICE`, `INFO` (default), or `DEBUG`.
+      log-level: "DEBUG"
       # OPTIONAL runner specification
       runs-on: "ubuntu-latest"
       # OPTIONAL disable CSS validation, as it pushes for a modern CSS which might not be backward compatible
