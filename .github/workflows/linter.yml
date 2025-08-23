@@ -26,6 +26,11 @@ on:
       - "notest/**"
   workflow_call:
     inputs:
+      log-level:
+        description: "How much output the script will generate to the console. One of ERROR, WARN, NOTICE, INFO, or DEBUG."
+        required: false
+        type: string
+        default: "INFO"
       runs-on:
         required: false
         type: string
@@ -123,6 +128,7 @@ jobs:
           FIX_SQLFLUFF: true
           FIX_YAML_PRETTIER: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LOG_LEVEL: ${{ inputs.log-level }}
           VALIDATE_CSS: ${{ inputs.validate-css }}
           # TODO 211003 returns false positive: {"line":"                    <li><a href=\"https://www.linkedin.com/company/MYCMSPROJECTSPECIFIC\" title=\"{=\"MYCMSPROJECTSPECIFIC na LinkedIn\"|translate}\"><i class=\"fa fa-linkedin\" aria-hidden=\"true\"></i></a></li>","lineNumber":56,"offender":"linkedin.com/company/MYCMSPROJECTSPECIFIC","offenderEntropy":-1,"commit":"","repo":"","repoURL":"","leakURL":"","rule":"LinkedIn Secret Key","commitMessage":"","author":"","email":"","file":".","date":"0001-01-01T00:00:00Z","tags":"secret, LinkedIn"}
           VALIDATE_GITLEAKS: false
