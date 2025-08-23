@@ -29,10 +29,11 @@ feat: super-linter fixes can be downloaded as an artifact
   - zizmor.yaml disables the unpinned-uses check - i.e. allows refering to version instead of an exact hash
   - many FIXes are applied automatically and their result can be downloaded as an artifact and then use locally with `git apply lint-fixes.patch`
   - removed: `JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml`
-  - `VALIDATE_JAVASCRIPT_ES: false` because Prettier is applied anyway and I don't want to have `.eslintrc.yml` configured
+  - `VALIDATE_JAVASCRIPT_ES: false` linter configuration because Prettier is applied anyway and I don't want to have `.eslintrc.yml` configured
+  - `validate-css: false` optional parameter disable CSS validation
 - bump actions/checkout@v4 to v5
 - allow VALIDATE_CSS in linter.yml as the Prettier must be applied anyway.
-- linter.yml: Temporarily rename composer.json (and then back) to prevent invoking composer within super-linter, as various libraries would be expected that are not part of super-linter environment.
+- linter.yml: Temporarily rename composer.json (and then back) to prevent invoking composer within super-linter, as the environment PHP version (which might not be app relevant) is used and various libraries would be expected that are not part of super-linter environment.
 
 ## [0.2.4] - 2025-07-05
 
