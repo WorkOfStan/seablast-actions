@@ -160,7 +160,7 @@ jobs:
         if: ${{ always() && env.RENAMED_FILE != '' && hashFiles(env.RENAMED_FILE) != '' }}
         run: mv "$RENAMED_FILE" composer.json
 
-      - name: Show what changed
+      - name: Show what changed even if super-linter fixed it and therefore passed
         if: ${{ always() }} # run even if super-linter failed
         run: |
           if ! git diff --quiet; then
