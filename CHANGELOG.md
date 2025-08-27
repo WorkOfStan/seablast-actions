@@ -26,7 +26,7 @@ feat: super-linter fixes can be downloaded as an artifact
 ### Changed
 
 - feat: super-linter slim version (linter.yml) moved from v7.2.1 to v8.1.0
-  - zizmor.yaml disables the unpinned-uses check - i.e. allows refering to version instead of an exact hash
+  - [zizmor.yaml](.github/linters/zizmor.yaml) disables the unpinned-uses check - i.e. allows refering to version instead of an exact hash
   - many FIXes are applied automatically and their result can be downloaded as an artifact and then use locally with `git apply lint-fixes.patch`
   - removed: `JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml`
   - `VALIDATE_JAVASCRIPT_ES: false` linter configuration because Prettier is applied anyway and I don't want to have `.eslintrc.yml` configured
