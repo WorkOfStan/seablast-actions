@@ -161,10 +161,14 @@ jobs:
         run: mv "$RENAMED_FILE" composer.json
 
       - name: Show what changed
-        if: ${{ failure() }} # show `git diff` if super-linter failed
+        if: ${{ always() }} # run even if super-linter failed
         run: |
-          git status --porcelain
-          git -c color.ui=always diff
+          if ! git diff --quiet; then
+            git status --porcelain
+            git -c color.ui=always diff
+            echo "❌ Linter made changes. Please commit them."
+            exit 1
+          fi
 
       - name: Create patch if there are changes
         id: patch
