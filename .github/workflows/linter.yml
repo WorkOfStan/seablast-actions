@@ -26,6 +26,11 @@ on:
       - "notest/**"
   workflow_call:
     inputs:
+      filter-regex-exclude:
+        description: "Exclude from linting"
+        required: false
+        type: string
+        default: ""
       log-level:
         description: "How much output the script will generate to the console. One of ERROR, WARN, NOTICE, INFO, or DEBUG."
         required: false
@@ -97,7 +102,7 @@ jobs:
           GITHUB_EVENT_PULL_REQUEST_BASE_NAME: ${{ github.event.pull_request.base.name }}
         shell: bash
 
-      - name: Prepare linter env (CSS)
+      - name: Prepare linter env (CSS + Exclude)
         # because it is not possible to combine VALIDATE_X true and false
         shell: bash
         run: |
@@ -105,6 +110,9 @@ jobs:
             echo "FIX_CSS=true" >> "$GITHUB_ENV"
           else
             echo "VALIDATE_CSS=false" >> "$GITHUB_ENV"
+          fi
+          if [ -n "${{ inputs.filter-regex-exclude }}" ]; then
+            echo "FILTER_REGEX_EXCLUDE=${{ inputs.filter-regex-exclude }}" >> "$GITHUB_ENV"
           fi
 
       ################################
