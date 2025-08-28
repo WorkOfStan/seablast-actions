@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
-## [0.2.5] - 2025-08-23
+## [0.2.5] - 2025-08-28
 
 feat: super-linter fixes can be downloaded as an artifact
 
@@ -31,10 +31,13 @@ feat: super-linter fixes can be downloaded as an artifact
   - removed: `JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml`
   - `VALIDATE_JAVASCRIPT_ES: false` linter configuration because Prettier is applied anyway and I don't want to have `.eslintrc.yml` configured
   - `validate-css: false` optional parameter disable CSS validation
-- bump actions/checkout@v4 to v5
-- allow VALIDATE_CSS in linter.yml as the Prettier must be applied anyway.
+  - `filter-regex-exclude: ""` optional parameter for REGEX to exclude certain files, e.g. 3rd party code, from being linted
+- chore: bump actions/checkout@v4 to v5
+- chore: Bash coding standard uses TAB and not SPACEs
+
+### Fixed
+
 - linter.yml: Temporarily rename composer.json (and then back) to prevent invoking composer within super-linter, as the environment PHP version (which might not be app relevant) is used and various libraries would be expected that are not part of super-linter environment.
-- bash coding standard uses TAB and not SPACEs
 
 ## [0.2.4] - 2025-07-05
 

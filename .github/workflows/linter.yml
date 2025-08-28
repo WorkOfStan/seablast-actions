@@ -111,9 +111,11 @@ jobs:
           else
             echo "VALIDATE_CSS=false" >> "$GITHUB_ENV"
           fi
-          if [ -n "${{ inputs.filter-regex-exclude }}" ]; then
-            echo "FILTER_REGEX_EXCLUDE=${{ inputs.filter-regex-exclude }}" >> "$GITHUB_ENV"
+          if [ -n "${INPUTS_FILTER_REGEX_EXCLUDE}" ]; then
+            echo "FILTER_REGEX_EXCLUDE=${INPUTS_FILTER_REGEX_EXCLUDE}" >> "$GITHUB_ENV"
           fi
+        env:
+          INPUTS_FILTER_REGEX_EXCLUDE: ${{ inputs.filter-regex-exclude }}
 
       ################################
       # Run Linter against code base #
