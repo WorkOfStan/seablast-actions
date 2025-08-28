@@ -31,7 +31,7 @@ feat: super-linter fixes can be downloaded as an artifact
   - removed: `JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml`
   - `VALIDATE_JAVASCRIPT_ES: false` linter configuration because Prettier is applied anyway and I don't want to have `.eslintrc.yml` configured
   - `validate-css: false` optional parameter disable CSS validation
-  - `filter-regex-exclude: ""` optional parameter for REGEX to exclude certain files, e.g. 3rd party code, from being linted
+  - `filter-regex-exclude: ""` optional parameter for regular expression to exclude certain files, e.g. third-party code, from being linted
 - chore: bump actions/checkout@v4 to v5
 - chore: Bash coding standard uses TAB and not SPACEs
 
@@ -47,7 +47,7 @@ fix: `git pull origin` doesn't work with `refs/pull/*`
 
 ## [0.2.3] - 2025-03-09
 
-Uses super-linter:v7.2.1 which doesn't invoke composer.
+fix: uses super-linter:v7.2.1 which doesn't invoke composer.
 
 ### Added
 
@@ -58,6 +58,8 @@ Uses super-linter:v7.2.1 which doesn't invoke composer.
 - linter.yml uses: `super-linter/super-linter/slim@v7.2.1` (instead of `super-linter/super-linter@main`) as v7.3.0 has a bug - composer expects PHP extensions that are not installed within super-linter environment
 
 ## [0.2.2] - 2025-02-21
+
+chore: The cache name starts with `phps-` prefix. PHPCS-fix instead of old phpcbf.
 
 ### Added
 
@@ -77,6 +79,8 @@ Uses super-linter:v7.2.1 which doesn't invoke composer.
 
 ## [0.2.1] - 2025-01-18
 
+fix: Fetch the latest changes to allow job chaining
+
 ### Added
 
 - show PHPStan version before analyzing
@@ -87,6 +91,8 @@ Uses super-linter:v7.2.1 which doesn't invoke composer.
 - the reusable workflows linter.yml, overtrue-phplint.yml and php-composer-dependencies-reusable.yml fetch the latest changes even by a previous job to allow for job chaining
 
 ## [0.2] - 2024-11-16
+
+feat: Check PHP syntax and install PHPStan for each PHP version separately
 
 ### Added
 
@@ -100,6 +106,8 @@ Uses super-linter:v7.2.1 which doesn't invoke composer.
 
 ## [0.1.1] - 2024-05-29
 
+fix: Super-linter adapts to the current branch. Phinx and dist config file paths can be modified.
+
 ### Changed
 
 - php-composer-dependencies-reusable: phinx and dist config file path can be modified
@@ -110,7 +118,7 @@ Uses super-linter:v7.2.1 which doesn't invoke composer.
 
 ## [0.1] - 2024-05-19
 
-Proven reusable workflows
+feat: Proven reusable workflows
 
 ### Added
 

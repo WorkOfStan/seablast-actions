@@ -80,8 +80,8 @@ jobs:
   call-workflow:
     uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@main
     with:
-      # OPTIONAL parameter for REGEX to exclude certain files, e.g. 3rd party code, from being linted
-      filter-regex-exclude: ".*/assets/3rdparty/.*"
+      # OPTIONAL parameter for REGEX to exclude certain files, e.g. third-party code, from being linted
+      filter-regex-exclude: ".*/assets/third-party/.*"
       # OPTIONAL Change how much output the script will generate to the console. One of `ERROR`, `WARN`, `NOTICE`, `INFO` (default), or `DEBUG`.
       log-level: "DEBUG"
       # OPTIONAL runner specification
