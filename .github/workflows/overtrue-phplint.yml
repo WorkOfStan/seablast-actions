@@ -36,4 +36,4 @@ jobs:
           #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check PHP syntax errors
-        uses: overtrue/phplint@9.6.2
+        uses: overtrue/phplint@10.0
