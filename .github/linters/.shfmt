@@ -1,6 +1,0 @@
-# 240519: Is not applied as super-linter doesn't take the configuration into account
-#-i 4
-[*.sh]
-# like -i=4
-indent_style = space
-indent_size = 4

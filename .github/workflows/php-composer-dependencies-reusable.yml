@@ -58,15 +58,20 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.ref }}
           fetch-depth: 0 # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
+          persist-credentials: true # git credentials are needed later, `false` would be safer: token not left in git config
+
       # Fetch latest changes (even by previous job)
       - name: Fetch latest changes
         if: ${{ !startsWith(github.ref, 'refs/pull/') }}
-        run: git pull origin ${{ github.ref }}
+        run: git pull origin "${GITHUB_REF}"
         shell: bash
+        env:
+          GITHUB_REF: ${{ github.ref }}
+          #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Install PHP ${{ matrix.php-version }} Test on ${{ runner.os }}"
         uses: "shivammathur/setup-php@v2"
@@ -150,13 +155,19 @@ jobs:
       # to fix `Constant DB_USERNAME not found.` etc not only for phpstan but also for phpunit tests
       - name: Copy local config files
         if: steps.check_files_configlocaldist.outputs.files_exists == 'true'
-        run: cp -p "${{ inputs.phpdist-config }}" "${{ inputs.phplocal-config }}"
+        run: cp -p "${INPUTS_PHPDIST_CONFIG}" "${INPUTS_PHPLOCAL_CONFIG}"
         shell: bash
+        env:
+          INPUTS_PHPDIST_CONFIG: ${{ inputs.phpdist-config }}
+          INPUTS_PHPLOCAL_CONFIG: ${{ inputs.phplocal-config }}
 
       - name: Copy local testing database settings
         if: steps.check_files_database.outputs.files_exists == 'true'
-        run: cp -p "${{ inputs.phinx-config }}" "${{ inputs.phinxlocal-config }}"
+        run: cp -p "$PHINX_CONFIG" "$PHINXLOCAL_CONFIG"
         shell: bash
+        env:
+          PHINX_CONFIG: ${{ inputs.phinx-config }}
+          PHINXLOCAL_CONFIG: ${{ inputs.phinxlocal-config }}
 
       - name: Install dependencies
         if: ${{ steps.vendor-cache.outputs.cache-hit != 'true' }}
@@ -166,8 +177,10 @@ jobs:
       - name: Phinx migration - migrate
         #PHP/5.6 has auth problem with MySQL/8
         if: ${{ matrix.php-version >= '7.1' && steps.check_files_database.outputs.files_exists == 'true' }}
-        run: ./vendor/bin/phinx migrate -e testing --configuration "${{ inputs.phinx-config }}"
+        run: ./vendor/bin/phinx migrate -e testing --configuration "$PHINX_CONFIG"
         shell: bash
+        env:
+          PHINX_CONFIG: ${{ inputs.phinx-config }}
 
       # PHPunit is installed anyway, so it doesn't make sense to use tools: phpunit
       # Note `sudo /etc/init.d/apache2 start` uses `/etc/apache2/sites-enabled/000-default.conf` where DocumentRoot = `/var/www/html` but without PHP

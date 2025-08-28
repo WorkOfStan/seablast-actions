@@ -80,28 +80,30 @@ jobs:
   call-workflow:
     uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@main
     with:
+      # OPTIONAL parameter for REGEX to exclude certain files, e.g. third-party code, from being linted
+      filter-regex-exclude: ".*/assets/third-party/.*"
+      # OPTIONAL Change how much output the script will generate to the console. One of `ERROR`, `WARN`, `NOTICE`, `INFO` (default), or `DEBUG`.
+      log-level: "DEBUG"
       # OPTIONAL runner specification
       runs-on: "ubuntu-latest"
+      # OPTIONAL disable CSS validation, as it pushes for a modern CSS which might not be backward compatible
+      validate-css: false
 ```
 
 With the release of [Super-Linter](https://github.com/super-linter/super-linter) 7.0.0, [Prettier](https://prettier.io/) has become the standard for many file formats, ensuring consistent code styling across your projects.
 Embrace this change and keep your codebase looking sharp by integrating Prettier directly into your workflow: [prettier-fix](https://github.com/marketplace/actions/prettier-fix).
 
-Note: It's not possible to select super-linter version through a parameter, as the `uses` field expects a static string, so at least `super-linter/super-linter/slim@latest` (instead of `super-linter/super-linter@main`)
-is used for sake of efficiency as these linters are not used in PHP anyway: Rustfmt, Rust Clippy, Azure Resource Manager Template Toolkit (arm-ttk), PSScriptAnalyzer, dotnet (.NET) commands and subcommands.
+Note 1: It's not possible to select super-linter version through a parameter, as the `uses` field expects a static string.
 
-### SHFMT notes
+Note 2: slim [variant](https://github.com/super-linter/super-linter?tab=readme-ov-file#super-linter-variants) is used for sake of efficiency as these linters are not used in PHP anyway: Rustfmt, Rust Clippy, Azure Resource Manager Template Toolkit (arm-ttk), PSScriptAnalyzer, dotnet (.NET) commands and subcommands.
 
-Super-linter configuration in [linter.yml](./github/workflows/linter.yml) refering to [.github/linters/.shfmt](.github/linters/.shfmt)
+Note 3: Many FIXes are applied automatically and their result can be downloaded as an artifact and then use locally with `git apply lint-fixes.patch`. If the change is in the `.github/workflows`, it can't be commited by a GitHub Action anyway.
 
-```yml
-SHELL_SHFMT_FILE_NAME: .shfmt
-```
+Note 4: composer.json automatically temporarily renamed (and then renamed back) to prevent invoking composer within super-linter, as the environment PHP version (which might not be app relevant) is used and various libraries would be expected that are not part of super-linter environment.
 
-is ignored in the end, as the code doesn't use the configuration:
-see <https://github.com/super-linter/super-linter/blob/main/lib/functions/linterCommands.sh> -> `LINTER_COMMANDS_ARRAY_SHELL_SHFMT=(shfmt -d)`
+Note 5: Copy/paste detection with the default threshold 0% is too strict. Todo consider parametric JSCPD_CONFIG_FILE . So far: `VALIDATE_JSCPD: false`
 
-And the default is to use 1 TAB as indentations, while the coding standard used here expects 4 spaces, so SHALL_SHFMT validation is turned off.
+Note 6: use [zizmor.yaml](.github/linters/zizmor.yaml) in your app to disable unpinned-uses check - Allows referring to an action by version tag instead of exact hash, so that Dependabot can monitor and update versions automatically.
 
 ## Automatic PHP Code Style improvements
 

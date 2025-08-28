@@ -5,6 +5,7 @@
 ###########################
 ###########################
 name: Lint Code Base
+# Variant slim - see: https://github.com/super-linter/super-linter?tab=readme-ov-file#super-linter-variants
 
 #
 # Documentation:
@@ -25,10 +26,25 @@ on:
       - "notest/**"
   workflow_call:
     inputs:
+      filter-regex-exclude:
+        description: "Exclude from linting"
+        required: false
+        type: string
+        default: ""
+      log-level:
+        description: "How much output the script will generate to the console. One of ERROR, WARN, NOTICE, INFO, or DEBUG."
+        required: false
+        type: string
+        default: "INFO"
       runs-on:
         required: false
         type: string
         default: "ubuntu-latest"
+      validate-css:
+        description: "Enable or disable CSS validation"
+        required: false
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -53,15 +69,26 @@ jobs:
       # Checkout the code base #
       ##########################
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.ref }}
           fetch-depth: 0 # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
+          persist-credentials: true # git credentials are needed later, `false` would be safer: token not left in git config
+
       # Fetch latest changes (even by previous job)
       - name: Fetch latest changes
         if: ${{ !startsWith(github.ref, 'refs/pull/') }}
-        run: git pull origin ${{ github.ref }}
+        run: git pull --ff-only origin "${GITHUB_REF}"
         shell: bash
+        env:
+          GITHUB_REF: ${{ github.ref }}
+          #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Temporarily rename composer.json (to prevent invoking composer within super-linter)
+        if: ${{ hashFiles('composer.json') != '' }} # only if composer.json exists
+        run: |
+          mv composer.json "action-${{ github.run_id }}.composer.json"
+          echo "RENAMED_FILE=action-${{ github.run_id }}.composer.json" >> "$GITHUB_ENV"
 
       # Dump the GitHub variables
       - name: Dump GitHub Variables
@@ -75,30 +102,99 @@ jobs:
           GITHUB_EVENT_PULL_REQUEST_BASE_NAME: ${{ github.event.pull_request.base.name }}
         shell: bash
 
+      - name: Prepare linter env (CSS + Exclude)
+        # because it is not possible to combine VALIDATE_X true and false
+        shell: bash
+        run: |
+          if [ "${{ inputs.validate-css }}" = "true" ]; then
+            echo "FIX_CSS=true" >> "$GITHUB_ENV"
+          else
+            echo "VALIDATE_CSS=false" >> "$GITHUB_ENV"
+          fi
+          if [ -n "${INPUTS_FILTER_REGEX_EXCLUDE}" ]; then
+            echo "FILTER_REGEX_EXCLUDE=${INPUTS_FILTER_REGEX_EXCLUDE}" >> "$GITHUB_ENV"
+          fi
+        env:
+          INPUTS_FILTER_REGEX_EXCLUDE: ${{ inputs.filter-regex-exclude }}
+
       ################################
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: super-linter/super-linter/slim@v7.2.1
+        uses: super-linter/super-linter/slim@v8.1.0
         env:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
-          FILTER_REGEX_EXCLUDE: '.*\/vendor\/.*'
+          #FILTER_REGEX_EXCLUDE: '.*\/vendor\/.*' # not needed as composer does not run
+          FIX_ANSIBLE: true
+          FIX_CSS_PRETTIER: true
+          FIX_ENV: true
+          FIX_GITHUB_ACTIONS_ZIZMOR: true
+          FIX_HTML_PRETTIER: true
+          FIX_JAVASCRIPT_PRETTIER: true
+          FIX_JSON_PRETTIER: true
+          FIX_JSON: true
+          FIX_JSONC: true
+          FIX_JSONC_PRETTIER: true
+          FIX_MARKDOWN_PRETTIER: true
+          FIX_MARKDOWN: true
+          FIX_NATURAL_LANGUAGE: true
+          FIX_POWERSHELL: true
+          FIX_PYTHON_BLACK: true
+          FIX_PYTHON_ISORT: true
+          FIX_PYTHON_RUFF: true
+          FIX_SHELL_SHFMT: true
+          FIX_SQLFLUFF: true
+          FIX_YAML_PRETTIER: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml
-          #SHELL_SHFMT_FILE_NAME: .shfmt
-          VALIDATE_ANSIBLE: false
-          VALIDATE_CSS: false
-          # TODO 211017 VALIDATE_GITHUB_ACTIONS returns false positive `unknown Webhook event "workflow_call"`
-          #VALIDATE_GITHUB_ACTIONS: false # 240519 is workflow_call understood?
+          LOG_LEVEL: ${{ inputs.log-level }}
           # TODO 211003 returns false positive: {"line":"                    <li><a href=\"https://www.linkedin.com/company/MYCMSPROJECTSPECIFIC\" title=\"{=\"MYCMSPROJECTSPECIFIC na LinkedIn\"|translate}\"><i class=\"fa fa-linkedin\" aria-hidden=\"true\"></i></a></li>","lineNumber":56,"offender":"linkedin.com/company/MYCMSPROJECTSPECIFIC","offenderEntropy":-1,"commit":"","repo":"","repoURL":"","leakURL":"","rule":"LinkedIn Secret Key","commitMessage":"","author":"","email":"","file":".","date":"0001-01-01T00:00:00Z","tags":"secret, LinkedIn"}
           VALIDATE_GITLEAKS: false
-          # 240803, there's no way to configure JAVASCRIPT_PRETTIER, neither it shows what exactly an issue is. Just 'Code style issue found in file.', which is useless.
-          VALIDATE_JAVASCRIPT_STANDARD: false
-          # TODO VALIDATE_JSCPD later
+          # Prettier is applied anyway and I don't want to have `.eslintrc.yml` configured
+          VALIDATE_JAVASCRIPT_ES: false
+          # Copy/paste detection with the default threshold 0% is too strict. Todo consider parametric JSCPD_CONFIG_FILE
           VALIDATE_JSCPD: false
           # PHPStan run in matrix strategy in php-composer-dependencies-reusable.yml
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false
-          # 240519 .shfmt is not taken into account, so far
-          VALIDATE_SHELL_SHFMT: false
+
+      - name: Restore composer.json
+        if: ${{ always() && env.RENAMED_FILE != '' && hashFiles(env.RENAMED_FILE) != '' }}
+        run: mv "$RENAMED_FILE" composer.json
+
+      - name: Show what changed even if super-linter fixed it and therefore passed
+        if: ${{ always() }} # run even if super-linter failed
+        run: |
+          if ! git diff --quiet; then
+            git status --porcelain
+            git -c color.ui=always diff
+            echo "❌ Linter made changes. Please commit them."
+            exit 1
+          fi
+
+      - name: Create patch if there are changes
+        id: patch
+        if: ${{ failure() }}
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            ## `--binary` includes also EOL and EOF newline changes
+            git diff --binary --no-color HEAD > lint-fixes.patch
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            ls -l lint-fixes.patch
+          fi
+
+      - name: Upload patch artifact
+        if: ${{ failure() && steps.patch.outputs.changed == 'true' }} # if super-linter failed and lint-fixes.patch exists
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-fixes
+          path: lint-fixes.patch
+          if-no-files-found: error
+          # Then you can apply it locally with:
+          # git apply lint-fixes.patch
+
+      - name: Inform about patch artifact
+        if: ${{ failure() && steps.patch.outputs.changed == 'true' && hashFiles('lint-fixes.patch') != '' }}
+        run: echo "::notice title=lint-fixes artifact ready::You can apply locally with 'git apply lint-fixes.patch'"

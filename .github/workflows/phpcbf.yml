@@ -15,11 +15,13 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Run PHP Code Beautifier if needed
-        run: echo "::warning title=This GitHub Action is deprecated.::Use https://github.com/marketplace/actions/phpcs-fix instead."
+        run: echo "::warning title=This GitHub Action is deprecated.::Use https://github.com/marketplace/actions/php-code-beautifier-and-fixer instead."
         shell: bash
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false # safer: token not left in git config
 
       - name: PHP_CodeSniffer phpcbf GitHub Action
         uses: ge-tracker/phpcbf-action@v1

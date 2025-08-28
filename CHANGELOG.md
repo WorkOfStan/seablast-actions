@@ -19,9 +19,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [0.2.5] - 2025-08-28
+
+feat: super-linter fixes can be downloaded as an artifact
+
+### Changed
+
+- feat: super-linter slim version (linter.yml) moved from v7.2.1 to v8.1.0
+  - [zizmor.yaml](.github/linters/zizmor.yaml) disables the unpinned-uses check - i.e. allows refering to version instead of an exact hash
+  - many FIXes are applied automatically and their result can be downloaded as an artifact and then use locally with `git apply lint-fixes.patch`
+  - removed: `JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml`
+  - `VALIDATE_JAVASCRIPT_ES: false` linter configuration because Prettier is applied anyway and I don't want to have `.eslintrc.yml` configured
+  - `validate-css: false` optional parameter disable CSS validation
+  - `filter-regex-exclude: ""` optional parameter for regular expression to exclude certain files, e.g. third-party code, from being linted
+- chore: bump actions/checkout@v4 to v5
+- chore: Bash coding standard uses TAB and not SPACEs
+
+### Fixed
+
+- linter.yml: Temporarily rename composer.json (and then back) to prevent invoking composer within super-linter, as the environment PHP version (which might not be app relevant) is used and various libraries would be expected that are not part of super-linter environment.
+
+## [0.2.4] - 2025-07-05
+
+### Fixed
+
+fix: `git pull origin` doesn't work with `refs/pull/*`
+
 ## [0.2.3] - 2025-03-09
 
-Uses super-linter:v7.2.1 which doesn't invoke composer.
+fix: uses super-linter:v7.2.1 which doesn't invoke composer.
 
 ### Added
 
@@ -32,6 +58,8 @@ Uses super-linter:v7.2.1 which doesn't invoke composer.
 - linter.yml uses: `super-linter/super-linter/slim@v7.2.1` (instead of `super-linter/super-linter@main`) as v7.3.0 has a bug - composer expects PHP extensions that are not installed within super-linter environment
 
 ## [0.2.2] - 2025-02-21
+
+chore: The cache name starts with `phps-` prefix. PHPCS-fix instead of old phpcbf.
 
 ### Added
 
@@ -51,6 +79,8 @@ Uses super-linter:v7.2.1 which doesn't invoke composer.
 
 ## [0.2.1] - 2025-01-18
 
+fix: Fetch the latest changes to allow job chaining
+
 ### Added
 
 - show PHPStan version before analyzing
@@ -61,6 +91,8 @@ Uses super-linter:v7.2.1 which doesn't invoke composer.
 - the reusable workflows linter.yml, overtrue-phplint.yml and php-composer-dependencies-reusable.yml fetch the latest changes even by a previous job to allow for job chaining
 
 ## [0.2] - 2024-11-16
+
+feat: Check PHP syntax and install PHPStan for each PHP version separately
 
 ### Added
 
@@ -74,6 +106,8 @@ Uses super-linter:v7.2.1 which doesn't invoke composer.
 
 ## [0.1.1] - 2024-05-29
 
+fix: Super-linter adapts to the current branch. Phinx and dist config file paths can be modified.
+
 ### Changed
 
 - php-composer-dependencies-reusable: phinx and dist config file path can be modified
@@ -84,7 +118,7 @@ Uses super-linter:v7.2.1 which doesn't invoke composer.
 
 ## [0.1] - 2024-05-19
 
-Proven reusable workflows
+feat: Proven reusable workflows
 
 ### Added
 
@@ -97,7 +131,9 @@ Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.3...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.5...HEAD
+[0.2.5]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.4...v0.2.5
+[0.2.4]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2...v0.2.1
