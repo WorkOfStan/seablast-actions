@@ -46,10 +46,10 @@ on:
         type: boolean
         default: true
       zizmor-config-file:
-        description: "Path to custom Zizmor config (GITHUB_ACTIONS_ZIZMOR_CONFIG_FILE). If empty, use repo's zizmor.yaml when present."
+        description: "Path to custom Zizmor config (GITHUB_ACTIONS_ZIZMOR_CONFIG_FILE). If empty, use Seablast/Action repo's zizmor.yaml."
         required: false
         type: string
-        default: ".github/linters/zizmor.yaml"
+        default: "{{ github.action_path }}/.github/linters/zizmor.yaml"
 
 permissions:
   contents: read
@@ -119,6 +119,7 @@ jobs:
           if [ -n "${INPUTS_FILTER_REGEX_EXCLUDE}" ]; then
             echo "FILTER_REGEX_EXCLUDE=${INPUTS_FILTER_REGEX_EXCLUDE}" >> "$GITHUB_ENV"
           fi
+          #if .github/linters/zizmor.yaml isnt present, then refer to this action
         env:
           INPUTS_FILTER_REGEX_EXCLUDE: ${{ inputs.filter-regex-exclude }}
 
