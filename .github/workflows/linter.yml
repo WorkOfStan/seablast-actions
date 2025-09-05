@@ -107,6 +107,15 @@ jobs:
           GITHUB_EVENT_PULL_REQUEST_BASE_NAME: ${{ github.event.pull_request.base.name }}
         shell: bash
 
+      # Stáhni akční repo ve stejné verzi (SHA), na jaké běží tato workflow šablona
+      - name: Checkout action repo (same ref as this reusable workflow)
+        uses: actions/checkout@v5
+        with:
+          repository: WorkOfStan/seablast-actions
+          ref: ${{ github.workflow_sha }}
+          path: _seablast_actions
+          # token: ${{ secrets.GITHUB_TOKEN }} # u public repa netřeba; u private ponech
+    
       - name: Prepare linter env (CSS + Exclude)
         # because it is not possible to combine VALIDATE_X true and false
         shell: bash
@@ -121,8 +130,8 @@ jobs:
           fi
           #if .github/linters/zizmor.yaml isnt present, then refer to this action
           if [ ! -f ".github/linters/zizmor.yaml" ]; then
-            # checkoutni znovu repozitář akce do podadresáře
-            git clone --depth 1 --branch "${{ github.ref_name }}" "https://github.com/WorkOfStan/seablast-actions.git" _seablast_actions
+            ## checkoutni znovu repozitář akce do podadresáře
+            #git clone --depth 1 --branch "${{ github.ref_name }}" "https://github.com/WorkOfStan/seablast-actions.git" _seablast_actions
             echo "GITHUB_ACTIONS_ZIZMOR_CONFIG_FILE=_seablast_actions.github/linters/zizmor.yaml" >> "$GITHUB_ENV"
             echo "Using action-bundled Zizmor config."
           fi
