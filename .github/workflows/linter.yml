@@ -45,6 +45,11 @@ on:
         required: false
         type: boolean
         default: true
+      zizmor-config-file:
+        description: "Path to custom Zizmor config (GITHUB_ACTIONS_ZIZMOR_CONFIG_FILE). If empty, use repo's zizmor.yaml when present."
+        required: false
+        type: string
+        default: ".github/linters/zizmor.yaml"
 
 permissions:
   contents: read
@@ -146,6 +151,7 @@ jobs:
           FIX_SHELL_SHFMT: true
           FIX_SQLFLUFF: true
           FIX_YAML_PRETTIER: true
+          GITHUB_ACTIONS_ZIZMOR_CONFIG_FILE: ${{ inputs.zizmor-config-file }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LOG_LEVEL: ${{ inputs.log-level }}
           # TODO 211003 returns false positive: {"line":"                    <li><a href=\"https://www.linkedin.com/company/MYCMSPROJECTSPECIFIC\" title=\"{=\"MYCMSPROJECTSPECIFIC na LinkedIn\"|translate}\"><i class=\"fa fa-linkedin\" aria-hidden=\"true\"></i></a></li>","lineNumber":56,"offender":"linkedin.com/company/MYCMSPROJECTSPECIFIC","offenderEntropy":-1,"commit":"","repo":"","repoURL":"","leakURL":"","rule":"LinkedIn Secret Key","commitMessage":"","author":"","email":"","file":".","date":"0001-01-01T00:00:00Z","tags":"secret, LinkedIn"}
