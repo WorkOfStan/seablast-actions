@@ -120,8 +120,8 @@ jobs:
             echo "FILTER_REGEX_EXCLUDE=${INPUTS_FILTER_REGEX_EXCLUDE}" >> "$GITHUB_ENV"
           fi
           #if .github/linters/zizmor.yaml isnt present, then refer to this action
-          if [ -z ".github/linters/zizmor.yaml" ]; then
-            echo "GITHUB_ACTIONS_ZIZMOR_CONFIG_FILE=${{ github.action_path }}/.github/linters/zizmor.yaml" >> "$GITHUB_ENV"
+          if [ -f ".github/linters/zizmor.yaml" ]; then
+            echo "GITHUB_ACTIONS_ZIZMOR_CONFIG_FILE=${{ github.action_path }}.github/linters/zizmor.yaml" >> "$GITHUB_ENV"
             echo "Using action-bundled Zizmor config."
           fi
         env:
