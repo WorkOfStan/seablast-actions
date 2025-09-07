@@ -102,6 +102,21 @@ jobs:
           GITHUB_EVENT_PULL_REQUEST_BASE_NAME: ${{ github.event.pull_request.base.name }}
         shell: bash
 
+      - name: Create zizmor.yaml linter config
+        if: ${{ !hashFiles('.github/linters/zizmor.yaml') }}
+        shell: bash
+        run: |
+          mkdir -p .github/linters
+          {
+            echo "---"
+            echo "rules:"
+            echo "  # disables the check - i.e. allows refering to version instead of an exact hash"
+            echo "  unpinned-uses:"
+            echo "    config:"
+            echo "      policies:"
+            echo "        \"*\": any"
+          } > .github/linters/zizmor.yaml
+
       - name: Prepare linter env (CSS + Exclude)
         # because it is not possible to combine VALIDATE_X true and false
         shell: bash

@@ -19,9 +19,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [0.2.5.1] - 2025-09-07
+
+### Added
+
+feat: If there's no `.github/linters/zizmor.yaml` present in the app repository, then this GitHub Action auto-generates such [zizmor.yaml](.github/linters/zizmor.yaml) to disable unpinned-uses check. (Not to force all apps to create a one purpose zizmor.yaml.)
+
 ## [0.2.5] - 2025-08-28
 
-feat: super-linter fixes can be downloaded as an artifact
+feat: super-linter fixes can be downloaded as an artifact.
 
 ### Changed
 
@@ -79,7 +85,7 @@ chore: The cache name starts with `phps-` prefix. PHPCS-fix instead of old phpcb
 
 ## [0.2.1] - 2025-01-18
 
-fix: Fetch the latest changes to allow job chaining
+fix: Fetch the latest changes to allow job chaining.
 
 ### Added
 
@@ -92,7 +98,7 @@ fix: Fetch the latest changes to allow job chaining
 
 ## [0.2] - 2024-11-16
 
-feat: Check PHP syntax and install PHPStan for each PHP version separately
+feat: Check PHP syntax and install PHPStan for each PHP version separately.
 
 ### Added
 
@@ -131,7 +137,8 @@ feat: Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.5...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.5.1...HEAD
+[0.2.5.1]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.5...v0.2.5.1
 [0.2.5]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.2...v0.2.3

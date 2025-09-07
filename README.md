@@ -103,7 +103,7 @@ Note 4: composer.json automatically temporarily renamed (and then renamed back) 
 
 Note 5: Copy/paste detection with the default threshold 0% is too strict. Todo consider parametric JSCPD_CONFIG_FILE . So far: `VALIDATE_JSCPD: false`
 
-Note 6: use [zizmor.yaml](.github/linters/zizmor.yaml) in your app to disable unpinned-uses check - Allows referring to an action by version tag instead of exact hash, so that Dependabot can monitor and update versions automatically.
+Note 6: You can either use your own zizmor.yaml or the GitHub Action auto-generates such [zizmor.yaml](.github/linters/zizmor.yaml) to disable unpinned-uses check. That allows referring to an action by version tag instead of exact hash, so that Dependabot can monitor and update versions automatically.
 
 ## Automatic PHP Code Style improvements
 
