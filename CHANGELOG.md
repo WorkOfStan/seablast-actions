@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [0.2.5.1] - 2025-09-07
+
+feat: You can either use your own zizmor.yaml or the GitHub Action auto-generates such [zizmor.yaml](.github/linters/zizmor.yaml) to disable unpinned-uses check is auto-generated, if not present. (Not to force all apps to create this one-purpose
+
 ## [0.2.5] - 2025-08-28
 
 feat: super-linter fixes can be downloaded as an artifact
