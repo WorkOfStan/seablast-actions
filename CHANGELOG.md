@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.5.1] - 2025-09-07
 
-feat: You can either use your own zizmor.yaml or the GitHub Action auto-generates such [zizmor.yaml](.github/linters/zizmor.yaml) to disable unpinned-uses check is auto-generated, if not present. (Not to force all apps to create this one-purpose
+feat: If there's no `.github/linters/zizmor.yaml` present in the app repo, then this GitHub Action auto-generates such [zizmor.yaml](.github/linters/zizmor.yaml) to disable unpinned-uses check. (Not to force all apps to create a one purpose zizmor.yaml.)
 
 ## [0.2.5] - 2025-08-28
 
@@ -135,7 +135,8 @@ feat: Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.5...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.5.1...HEAD
+[0.2.5.1]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.5...v0.2.5.1
 [0.2.5]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.2...v0.2.3
