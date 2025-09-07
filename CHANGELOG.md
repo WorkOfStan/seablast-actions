@@ -21,11 +21,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.5.1] - 2025-09-07
 
-feat: If there's no `.github/linters/zizmor.yaml` present in the app repo, then this GitHub Action auto-generates such [zizmor.yaml](.github/linters/zizmor.yaml) to disable unpinned-uses check. (Not to force all apps to create a one purpose zizmor.yaml.)
+### Added
+
+feat: If there's no `.github/linters/zizmor.yaml` present in the app repository, then this GitHub Action auto-generates such [zizmor.yaml](.github/linters/zizmor.yaml) to disable unpinned-uses check. (Not to force all apps to create a one purpose zizmor.yaml.)
 
 ## [0.2.5] - 2025-08-28
 
-feat: super-linter fixes can be downloaded as an artifact
+feat: super-linter fixes can be downloaded as an artifact.
 
 ### Changed
 
@@ -83,7 +85,7 @@ chore: The cache name starts with `phps-` prefix. PHPCS-fix instead of old phpcb
 
 ## [0.2.1] - 2025-01-18
 
-fix: Fetch the latest changes to allow job chaining
+fix: Fetch the latest changes to allow job chaining.
 
 ### Added
 
@@ -96,7 +98,7 @@ fix: Fetch the latest changes to allow job chaining
 
 ## [0.2] - 2024-11-16
 
-feat: Check PHP syntax and install PHPStan for each PHP version separately
+feat: Check PHP syntax and install PHPStan for each PHP version separately.
 
 ### Added
 
