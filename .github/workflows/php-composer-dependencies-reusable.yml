@@ -177,7 +177,7 @@ jobs:
       - name: Phinx migration - migrate
         #PHP/5.6 has auth problem with MySQL/8
         if: ${{ matrix.php-version >= '7.1' && steps.check_files_database.outputs.files_exists == 'true' }}
-        run: ./vendor/bin/phinx migrate -e testing --configuration "$PHINX_CONFIG"
+        run: ./vendor/bin/phinx migrate -e testing -vvv --configuration "$PHINX_CONFIG"
         shell: bash
         env:
           PHINX_CONFIG: ${{ inputs.phinx-config }}
