@@ -141,8 +141,8 @@ jobs:
             echo "VALIDATE_BIOME_FORMAT=false" >> "$GITHUB_ENV"
             echo "VALIDATE_BIOME_LINT=false" >> "$GITHUB_ENV"
           fi
-          env:
-            INPUTS_FILTER_REGEX_EXCLUDE: ${{ inputs.filter-regex-exclude }}
+        env:
+          INPUTS_FILTER_REGEX_EXCLUDE: ${{ inputs.filter-regex-exclude }}
 
       ################################
       # Run Linter against code base #
