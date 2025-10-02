@@ -9,9 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Added` for new features
 
-- [Biome](https://biomejs.dev/) added to super-linter v8.2.0
+- `validate-biome: true` optional parameter enable [Biome](https://biomejs.dev/) validation added to super-linter v8.2.0
 
 ### `Changed` for changes in existing functionality
+
+-  super-linter bumped to v8.2.0
 
 ### `Deprecated` for soon-to-be removed features
 

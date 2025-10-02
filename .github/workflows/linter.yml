@@ -40,6 +40,11 @@ on:
         required: false
         type: string
         default: "ubuntu-latest"
+      validate-biome:
+        description: "Enable or disable Biome validation"
+        required: false
+        type: boolean
+        default: false
       validate-css:
         description: "Enable or disable CSS validation"
         required: false
@@ -117,7 +122,7 @@ jobs:
             echo "        \"*\": any"
           } > .github/linters/zizmor.yaml
 
-      - name: Prepare linter env (CSS + Exclude)
+      - name: Prepare linter env (Biome, CSS, Exclude)
         # because it is not possible to combine VALIDATE_X true and false
         shell: bash
         run: |
@@ -129,8 +134,15 @@ jobs:
           if [ -n "${INPUTS_FILTER_REGEX_EXCLUDE}" ]; then
             echo "FILTER_REGEX_EXCLUDE=${INPUTS_FILTER_REGEX_EXCLUDE}" >> "$GITHUB_ENV"
           fi
-        env:
-          INPUTS_FILTER_REGEX_EXCLUDE: ${{ inputs.filter-regex-exclude }}
+          if [ "${{ inputs.validate-biome }}" = "true" ]; then
+            echo "FIX_BIOME_FORMAT: true" >> "$GITHUB_ENV"
+            echo "FIX_BIOME_LINT: true" >> "$GITHUB_ENV"
+          else
+            echo "VALIDATE_BIOME_FORMAT=false" >> "$GITHUB_ENV"
+            echo "VALIDATE_BIOME_LINT=false" >> "$GITHUB_ENV"
+          fi
+          env:
+            INPUTS_FILTER_REGEX_EXCLUDE: ${{ inputs.filter-regex-exclude }}
 
       ################################
       # Run Linter against code base #
@@ -142,8 +154,6 @@ jobs:
           DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
           #FILTER_REGEX_EXCLUDE: '.*\/vendor\/.*' # not needed as composer does not run
           FIX_ANSIBLE: true
-          FIX_BIOME_FORMAT: true
-          FIX_BIOME_LINT: true
           FIX_CSS_PRETTIER: true
           FIX_ENV: true
           FIX_GITHUB_ACTIONS_ZIZMOR: true
