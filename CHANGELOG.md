@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Changed` for changes in existing functionality
 
--  super-linter bumped to v8.2.0
+- super-linter bumped to v8.2.0
 
 ### `Deprecated` for soon-to-be removed features
 
