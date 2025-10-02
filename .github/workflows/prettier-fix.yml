@@ -45,7 +45,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # use GITHUB_TOKEN because use of pr-comments
         with:
           message: true
-          branch: true
+          # to accept dependabot/github_actions/*
+          branch: false
           author-name: true
           author-email: true
           commit-signoff: false
