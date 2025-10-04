@@ -86,6 +86,8 @@ jobs:
       log-level: "DEBUG"
       # OPTIONAL runner specification
       runs-on: "ubuntu-latest"
+      # OPTIONAL enable Biome validation
+      validate-biome: true
       # OPTIONAL disable CSS validation, as it pushes for a modern CSS which might not be backward compatible
       validate-css: false
 ```

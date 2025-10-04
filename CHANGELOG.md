@@ -19,6 +19,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [0.2.6] - 2025-10-04
+
+chore(super-linter): Bumps [super-linter/super-linter](https://github.com/super-linter/super-linter) from 8.1.0 to 8.2.0.
+
+### Added
+
+- `validate-biome: true` optional parameter enable [Biome](https://biomejs.dev/) validation added to super-linter v8.2.0
+
+### Changed
+
+- super-linter bumped to v8.2.0
+
 ## [0.2.5.2] - 2025-09-26
 
 feat: phinx migration verbose (in php-composer-dependencies-reusable.yml)
@@ -141,7 +153,8 @@ feat: Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.5.2...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.6...HEAD
+[0.2.6]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.5.2...v0.2.6
 [0.2.5.2]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.5.1...v0.2.5.2
 [0.2.5.1]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.5...v0.2.5.1
 [0.2.5]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.4...v0.2.5
