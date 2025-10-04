@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.6] - 2025-10-04
 
+chore(super-linter): Bumps [super-linter/super-linter](https://github.com/super-linter/super-linter) from 8.1.0 to 8.2.0.
+
 ### Added
 
 - `validate-biome: true` optional parameter enable [Biome](https://biomejs.dev/) validation added to super-linter v8.2.0
