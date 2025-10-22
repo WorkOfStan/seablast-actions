@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [0.2.7] - 2025-10-22
+
+fix: fix scheduled GitHub Actions by bumping super-linter::v.8.2.0 to v.8.2.1 (as super-linter::v8.2.0 failed on scheduled tasks with this error: `/action/lib/functions/validation.sh: line 387: GIT_BEFORE_SHA_HEAD: unbound variable`)
+
 ## [0.2.6] - 2025-10-04
 
 chore(super-linter): Bumps [super-linter/super-linter](https://github.com/super-linter/super-linter) from 8.1.0 to 8.2.0.
@@ -153,7 +157,8 @@ feat: Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.6...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.7...HEAD
+[0.2.7]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.6...v0.2.7
 [0.2.6]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.5.2...v0.2.6
 [0.2.5.2]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.5.1...v0.2.5.2
 [0.2.5.1]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.5...v0.2.5.1
