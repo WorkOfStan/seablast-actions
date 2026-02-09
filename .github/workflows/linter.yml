@@ -74,11 +74,13 @@ jobs:
       # Checkout the code base #
       ##########################
       - name: Checkout Code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.ref }}
-          fetch-depth: 0 # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
-          persist-credentials: true # git credentials are needed later, `false` would be safer: token not left in git config
+          # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
+          fetch-depth: 0
+          # git credentials are needed later, `false` would be safer: token not left in git config
+          persist-credentials: true
 
       # Fetch latest changes (even by previous job)
       - name: Fetch latest changes
@@ -148,7 +150,7 @@ jobs:
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: super-linter/super-linter/slim@v8.2.1
+        uses: super-linter/super-linter/slim@v8.5.0
         env:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
@@ -213,8 +215,9 @@ jobs:
           fi
 
       - name: Upload patch artifact
-        if: ${{ failure() && steps.patch.outputs.changed == 'true' }} # if super-linter failed and lint-fixes.patch exists
-        uses: actions/upload-artifact@v4
+        # if super-linter failed and lint-fixes.patch exists
+        if: ${{ failure() && steps.patch.outputs.changed == 'true' }}
+        uses: actions/upload-artifact@v6
         with:
           name: lint-fixes
           path: lint-fixes.patch
