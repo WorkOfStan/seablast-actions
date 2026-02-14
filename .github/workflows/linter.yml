@@ -50,6 +50,11 @@ on:
         required: false
         type: boolean
         default: true
+      validate-spell-codespell:
+        description: "Enable or disable SPELL_CODESPELL validation. It treats words from other languages than English as typos. Creating ignore/allowlist is impractical. Use with caution."
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -74,11 +79,13 @@ jobs:
       # Checkout the code base #
       ##########################
       - name: Checkout Code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.ref }}
-          fetch-depth: 0 # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
-          persist-credentials: true # git credentials are needed later, `false` would be safer: token not left in git config
+          # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
+          fetch-depth: 0
+          # git credentials are needed later, `false` would be safer: token not left in git config
+          persist-credentials: true
 
       # Fetch latest changes (even by previous job)
       - name: Fetch latest changes
@@ -123,9 +130,16 @@ jobs:
           } > .github/linters/zizmor.yaml
 
       - name: Prepare linter env (Biome, CSS, Exclude)
-        # because it is not possible to combine VALIDATE_X true and false
+        # because it is not possible to combine VALIDATE_X true and false. So VALIDATE can only be false while FIX can only be true.
         shell: bash
         run: |
+          if [ "${{ inputs.validate-biome }}" = "true" ]; then
+            echo "FIX_BIOME_FORMAT=true" >> "$GITHUB_ENV"
+            echo "FIX_BIOME_LINT=true" >> "$GITHUB_ENV"
+          else
+            echo "VALIDATE_BIOME_FORMAT=false" >> "$GITHUB_ENV"
+            echo "VALIDATE_BIOME_LINT=false" >> "$GITHUB_ENV"
+          fi
           if [ "${{ inputs.validate-css }}" = "true" ]; then
             echo "FIX_CSS=true" >> "$GITHUB_ENV"
           else
@@ -134,12 +148,11 @@ jobs:
           if [ -n "${INPUTS_FILTER_REGEX_EXCLUDE}" ]; then
             echo "FILTER_REGEX_EXCLUDE=${INPUTS_FILTER_REGEX_EXCLUDE}" >> "$GITHUB_ENV"
           fi
-          if [ "${{ inputs.validate-biome }}" = "true" ]; then
-            echo "FIX_BIOME_FORMAT: true" >> "$GITHUB_ENV"
-            echo "FIX_BIOME_LINT: true" >> "$GITHUB_ENV"
+          # It treats words from other languages than English as typos. Creating ignore/allowlist is impractical. Use with caution.
+          if [ "${{ inputs.validate-spell-codespell }}" = "true" ]; then
+            echo "FIX_SPELL_CODESPELL=true" >> "$GITHUB_ENV"
           else
-            echo "VALIDATE_BIOME_FORMAT=false" >> "$GITHUB_ENV"
-            echo "VALIDATE_BIOME_LINT=false" >> "$GITHUB_ENV"
+            echo "VALIDATE_SPELL_CODESPELL=false" >> "$GITHUB_ENV"
           fi
         env:
           INPUTS_FILTER_REGEX_EXCLUDE: ${{ inputs.filter-regex-exclude }}
@@ -148,7 +161,7 @@ jobs:
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: super-linter/super-linter/slim@v8.2.1
+        uses: super-linter/super-linter/slim@v8.5.0
         env:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
@@ -213,8 +226,9 @@ jobs:
           fi
 
       - name: Upload patch artifact
-        if: ${{ failure() && steps.patch.outputs.changed == 'true' }} # if super-linter failed and lint-fixes.patch exists
-        uses: actions/upload-artifact@v4
+        # if super-linter failed and lint-fixes.patch exists
+        if: ${{ failure() && steps.patch.outputs.changed == 'true' }}
+        uses: actions/upload-artifact@v6
         with:
           name: lint-fixes
           path: lint-fixes.patch
