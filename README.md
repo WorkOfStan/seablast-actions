@@ -90,6 +90,8 @@ jobs:
       validate-biome: true
       # OPTIONAL disable CSS validation, as it pushes for a modern CSS which might not be backward compatible
       validate-css: false
+      # OPTIONAL enable SPELL_CODESPELL validation. It treats words from other languages than English as typos. Creating ignore/allowlist is impractical. Use with caution.
+      validate-spell-codespell: true
 ```
 
 With the release of [Super-Linter](https://github.com/super-linter/super-linter) 7.0.0, [Prettier](https://prettier.io/) has become the standard for many file formats, ensuring consistent code styling across your projects.

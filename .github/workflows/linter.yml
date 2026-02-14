@@ -130,12 +130,12 @@ jobs:
           } > .github/linters/zizmor.yaml
 
       - name: Prepare linter env (Biome, CSS, Exclude)
-        # because it is not possible to combine VALIDATE_X true and false
+        # because it is not possible to combine VALIDATE_X true and false. So VALIDATE can only be false while FIX can only be true.
         shell: bash
         run: |
           if [ "${{ inputs.validate-biome }}" = "true" ]; then
-            echo "FIX_BIOME_FORMAT: true" >> "$GITHUB_ENV"
-            echo "FIX_BIOME_LINT: true" >> "$GITHUB_ENV"
+            echo "FIX_BIOME_FORMAT=true" >> "$GITHUB_ENV"
+            echo "FIX_BIOME_LINT=true" >> "$GITHUB_ENV"
           else
             echo "VALIDATE_BIOME_FORMAT=false" >> "$GITHUB_ENV"
             echo "VALIDATE_BIOME_LINT=false" >> "$GITHUB_ENV"
@@ -150,7 +150,7 @@ jobs:
           fi
           # It treats words from other languages than English as typos. Creating ignore/allowlist is impractical. Use with caution.
           if [ "${{ inputs.validate-spell-codespell }}" = "true" ]; then
-            echo "FIX_SPELL_CODESPELL: true" >> "$GITHUB_ENV"
+            echo "FIX_SPELL_CODESPELL=true" >> "$GITHUB_ENV"
           else
             echo "VALIDATE_SPELL_CODESPELL=false" >> "$GITHUB_ENV"
           fi

@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 fix: bump super-linter to v8.5.0
 
+### Changed
+
+- fix `FIX_BIOME_*` entry to `env`
+
 ### Security
 
 - bump super-linter to v8.5.0 due to High severity `CVE-2026-25761` - Super-linter is vulnerable to command injection via crafted filenames in Super-linter Action
