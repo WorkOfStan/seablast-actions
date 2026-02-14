@@ -33,17 +33,17 @@ jobs:
   call-workflow:
     uses: WorkOfStan/seablast-actions/.github/workflows/php-composer-dependencies-reusable.yml@main
     with:
-      # REQUIRED JSON
+      # REQUIRED (JSON string)
       php-version: '["7.2", "7.3", "7.4"]'
-      # OPTIONAL path with the default database configuration
+      # OPTIONAL: path with the default database configuration
       phinx-config: "phinx.dist.yml"
-      # OPTIONAL path where the app code is looking for the database configuration
+      # OPTIONAL: path where the app expects the local database configuration
       phinxlocal-config: "phinx.yml"
-      # OPTIONAL path to phpdist-config specimen which is used to create the actual phplocal-config
+      # OPTIONAL: path to phpdist-config specimen which is used to create the actual phplocal-config
       phpdist-config: "./conf/app.conf.dist.php"
-      # OPTIONAL path where the app code is looking for the local app configuration
+      # OPTIONAL: path where the app code is looking for the local app configuration
       phplocal-config: "./conf/app.conf.local.php"
-      # OPTIONAL runner specification
+      # OPTIONAL: runner specification
       runs-on: "ubuntu-latest"
 ```
 
