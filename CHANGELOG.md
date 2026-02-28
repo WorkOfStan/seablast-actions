@@ -11,8 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Changed` for changes in existing functionality
 
-- linter.yml: temporary composer.json rename now covers every composer.json in the repository (even in subdirectories) and restores them after the run.
-
 ### `Deprecated` for soon-to-be removed features
 
 ### `Removed` for now removed features
@@ -20,6 +18,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### `Fixed` for any bugfixes
 
 ### `Security` in case of vulnerabilities
+
+## [0.2.9] - 2026-03-01
+
+### Added
+
+- add note that the default `.github/linters/zizmor.yaml` is used
+
+### Changed
+
+- linter.yml: temporary composer.json rename now covers every composer.json in the repository (even in subdirectories) and restores them after the run.
 
 ## [0.2.8] - 2026-02-14
 
@@ -171,7 +179,8 @@ feat: Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.8...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.9...HEAD
+[0.2.9]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.8...v0.2.9
 [0.2.8]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.7...v0.2.8
 [0.2.7]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.6...v0.2.7
 [0.2.6]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.5.2...v0.2.6

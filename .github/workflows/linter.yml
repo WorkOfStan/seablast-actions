@@ -97,7 +97,8 @@ jobs:
           #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Temporarily rename composer.json files (to prevent invoking composer within super-linter)
-        if: ${{ hashFiles('**/composer.json') != '' }} # only if any composer.json exists
+        # only if any composer.json exists
+        if: ${{ hashFiles('**/composer.json') != '' }}
         run: |
           set -eo pipefail
           mapfile -t composer_files < <(find . -type f -name composer.json | sort)
@@ -132,6 +133,7 @@ jobs:
         if: ${{ !hashFiles('.github/linters/zizmor.yaml') }}
         shell: bash
         run: |
+          echo "The default .github/linters/zizmor.yaml used"
           mkdir -p .github/linters
           {
             echo "---"
@@ -227,7 +229,8 @@ jobs:
           done < "$map_file"
 
       - name: Show what changed even if super-linter fixed it and therefore passed
-        if: ${{ always() }} # run even if super-linter failed
+        # run even if super-linter failed
+        if: ${{ always() }}
         run: |
           if ! git diff --quiet; then
             git status --porcelain

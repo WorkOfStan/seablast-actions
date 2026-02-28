@@ -21,7 +21,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          persist-credentials: false # safer: token not left in git config
+          # safer: token not left in git config
+          persist-credentials: false
 
       - name: PHP_CodeSniffer phpcbf GitHub Action
         uses: ge-tracker/phpcbf-action@v1
