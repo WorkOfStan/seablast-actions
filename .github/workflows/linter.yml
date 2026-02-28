@@ -111,8 +111,7 @@ jobs:
             dir=$(dirname "$file")
             new_name="$dir/action-${{ github.run_id }}-composer-${idx}.json"
             mv "$file" "$new_name"
-            printf '%s	%s
-' "$new_name" "$file" >> "$map_file"
+            printf '%s\t%s\n' "$new_name" "$file" >> "$map_file"
             idx=$((idx + 1))
           done
           echo "RENAMED_FILES_MAP=$map_file" >> "$GITHUB_ENV"
