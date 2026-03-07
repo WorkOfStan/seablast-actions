@@ -21,9 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.9] - 2026-03-01
 
-### Added
-
-- add note that the default `.github/linters/zizmor.yaml` is used
+feat: prevent any composer.json file be used by super-linter
 
 ### Changed
 

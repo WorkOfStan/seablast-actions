@@ -129,11 +129,10 @@ jobs:
           GITHUB_EVENT_PULL_REQUEST_BASE_NAME: ${{ github.event.pull_request.base.name }}
         shell: bash
 
-      - name: Create zizmor.yaml linter config
+      - name: Create the default zizmor.yaml linter config
         if: ${{ !hashFiles('.github/linters/zizmor.yaml') }}
         shell: bash
         run: |
-          echo "The default .github/linters/zizmor.yaml used"
           mkdir -p .github/linters
           {
             echo "---"
