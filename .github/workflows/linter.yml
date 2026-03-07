@@ -96,11 +96,26 @@ jobs:
           GITHUB_REF: ${{ github.ref }}
           #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Temporarily rename composer.json (to prevent invoking composer within super-linter)
-        if: ${{ hashFiles('composer.json') != '' }} # only if composer.json exists
+      - name: Temporarily rename composer.json files (to prevent invoking composer within super-linter)
+        # only if any composer.json exists
+        if: ${{ hashFiles('**/composer.json') != '' }}
         run: |
-          mv composer.json "action-${{ github.run_id }}.composer.json"
-          echo "RENAMED_FILE=action-${{ github.run_id }}.composer.json" >> "$GITHUB_ENV"
+          set -eo pipefail
+          mapfile -t composer_files < <(find . -type f -name composer.json | sort)
+          if [ ${#composer_files[@]} -eq 0 ]; then
+            exit 0
+          fi
+          map_file="action-${{ github.run_id }}-composer-map.txt"
+          : > "$map_file"
+          idx=0
+          for file in "${composer_files[@]}"; do
+            dir=$(dirname "$file")
+            new_name="$dir/action-${{ github.run_id }}-composer-${idx}.json"
+            mv "$file" "$new_name"
+            printf '%s\t%s\n' "$new_name" "$file" >> "$map_file"
+            idx=$((idx + 1))
+          done
+          echo "RENAMED_FILES_MAP=$map_file" >> "$GITHUB_ENV"
 
       # Dump the GitHub variables
       - name: Dump GitHub Variables
@@ -114,7 +129,7 @@ jobs:
           GITHUB_EVENT_PULL_REQUEST_BASE_NAME: ${{ github.event.pull_request.base.name }}
         shell: bash
 
-      - name: Create zizmor.yaml linter config
+      - name: Create the default zizmor.yaml linter config
         if: ${{ !hashFiles('.github/linters/zizmor.yaml') }}
         shell: bash
         run: |
@@ -198,12 +213,23 @@ jobs:
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false
 
-      - name: Restore composer.json
-        if: ${{ always() && env.RENAMED_FILE != '' && hashFiles(env.RENAMED_FILE) != '' }}
-        run: mv "$RENAMED_FILE" composer.json
+      - name: Restore composer.json files
+        if: ${{ always() && env.RENAMED_FILES_MAP != '' }}
+        run: |
+          set -eo pipefail
+          map_file="$RENAMED_FILES_MAP"
+          if [ ! -f "$map_file" ]; then
+            exit 0
+          fi
+          while IFS=$'	' read -r renamed original; do
+            if [ -n "$renamed" ] && [ -f "$renamed" ]; then
+              mv "$renamed" "$original"
+            fi
+          done < "$map_file"
 
       - name: Show what changed even if super-linter fixed it and therefore passed
-        if: ${{ always() }} # run even if super-linter failed
+        # run even if super-linter failed
+        if: ${{ always() }}
         run: |
           if ! git diff --quiet; then
             git status --porcelain

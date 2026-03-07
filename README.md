@@ -103,7 +103,7 @@ Note 2: slim [variant](https://github.com/super-linter/super-linter?tab=readme-o
 
 Note 3: Many FIXes are applied automatically and their result can be downloaded as an artifact and then use locally with `git apply lint-fixes.patch`. If the change is in the `.github/workflows`, it can't be commited by a GitHub Action anyway.
 
-Note 4: composer.json automatically temporarily renamed (and then renamed back) to prevent invoking composer within super-linter, as the environment PHP version (which might not be app relevant) is used and various libraries would be expected that are not part of super-linter environment.
+Note 4: any composer.json automatically temporarily renamed (and then renamed back) to prevent invoking composer within super-linter, as the environment PHP version (which might not be app relevant) is used and various libraries would be expected that are not part of super-linter environment.
 
 Note 5: Copy/paste detection with the default threshold 0% is too strict. Todo consider parametric JSCPD_CONFIG_FILE . So far: `VALIDATE_JSCPD: false`
 
