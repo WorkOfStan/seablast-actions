@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
-## [0.2.9] - 2026-03-01
+## [0.2.9] - 2026-03-07
 
 feat: prevent any composer.json file be used by super-linter
 
