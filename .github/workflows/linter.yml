@@ -254,7 +254,7 @@ jobs:
       - name: Upload patch artifact
         # if super-linter failed and lint-fixes.patch exists
         if: ${{ failure() && steps.patch.outputs.changed == 'true' }}
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: lint-fixes
           path: lint-fixes.patch
