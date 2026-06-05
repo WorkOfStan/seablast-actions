@@ -59,6 +59,10 @@ on:
 permissions:
   contents: read
 
+defaults:
+  run:
+    shell: bash
+
 ###############
 # Set the Job #
 ###############
@@ -79,7 +83,7 @@ jobs:
       # Checkout the code base #
       ##########################
       - name: Checkout Code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ github.ref }}
           # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
@@ -91,7 +95,6 @@ jobs:
       - name: Fetch latest changes
         if: ${{ !startsWith(github.ref, 'refs/pull/') }}
         run: git pull --ff-only origin "${GITHUB_REF}"
-        shell: bash
         env:
           GITHUB_REF: ${{ github.ref }}
           #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -99,6 +102,7 @@ jobs:
       - name: Temporarily rename composer.json files (to prevent invoking composer within super-linter)
         # only if any composer.json exists
         if: ${{ hashFiles('**/composer.json') != '' }}
+        shell: bash
         run: |
           set -eo pipefail
           mapfile -t composer_files < <(find . -type f -name composer.json | sort)
@@ -127,17 +131,15 @@ jobs:
           GITHUB_REF_NAME: ${{ github.ref_name }}
           GITHUB_EVENT_PULL_REQUEST_BASE_REF: ${{ github.event.pull_request.base.ref }}
           GITHUB_EVENT_PULL_REQUEST_BASE_NAME: ${{ github.event.pull_request.base.name }}
-        shell: bash
 
       - name: Create the default zizmor.yaml linter config
         if: ${{ !hashFiles('.github/linters/zizmor.yaml') }}
-        shell: bash
         run: |
           mkdir -p .github/linters
           {
             echo "---"
             echo "rules:"
-            echo "  # disables the check - i.e. allows refering to version instead of an exact hash"
+            echo "  # disables the check - i.e. allows referring to version instead of an exact hash"
             echo "  unpinned-uses:"
             echo "    config:"
             echo "      policies:"
@@ -146,37 +148,52 @@ jobs:
 
       - name: Prepare linter env (Biome, CSS, Exclude)
         # because it is not possible to combine VALIDATE_X true and false. So VALIDATE can only be false while FIX can only be true.
-        shell: bash
         run: |
-          if [ "${{ inputs.validate-biome }}" = "true" ]; then
-            echo "FIX_BIOME_FORMAT=true" >> "$GITHUB_ENV"
-            echo "FIX_BIOME_LINT=true" >> "$GITHUB_ENV"
+          enable_vars() {
+            for name in "$@"; do
+              echo "$name=true" >> "$GITHUB_ENV"
+            done
+          }
+
+          disable_vars() {
+            for name in "$@"; do
+              echo "$name=false" >> "$GITHUB_ENV"
+            done
+          }
+
+          if [ "${INPUTS_VALIDATE_BIOME}" = "true" ]; then
+            enable_vars FIX_BIOME_FORMAT FIX_BIOME_LINT
           else
-            echo "VALIDATE_BIOME_FORMAT=false" >> "$GITHUB_ENV"
-            echo "VALIDATE_BIOME_LINT=false" >> "$GITHUB_ENV"
+            disable_vars VALIDATE_BIOME_FORMAT VALIDATE_BIOME_LINT
           fi
-          if [ "${{ inputs.validate-css }}" = "true" ]; then
-            echo "FIX_CSS=true" >> "$GITHUB_ENV"
+
+          if [ "${INPUTS_VALIDATE_CSS}" = "true" ]; then
+            enable_vars FIX_CSS
           else
-            echo "VALIDATE_CSS=false" >> "$GITHUB_ENV"
+            disable_vars VALIDATE_CSS
           fi
+
           if [ -n "${INPUTS_FILTER_REGEX_EXCLUDE}" ]; then
             echo "FILTER_REGEX_EXCLUDE=${INPUTS_FILTER_REGEX_EXCLUDE}" >> "$GITHUB_ENV"
           fi
+
           # It treats words from other languages than English as typos. Creating ignore/allowlist is impractical. Use with caution.
-          if [ "${{ inputs.validate-spell-codespell }}" = "true" ]; then
-            echo "FIX_SPELL_CODESPELL=true" >> "$GITHUB_ENV"
+          if [ "${INPUTS_VALIDATE_SPELL_CODESPELL}" = "true" ]; then
+            enable_vars FIX_SPELL_CODESPELL
           else
-            echo "VALIDATE_SPELL_CODESPELL=false" >> "$GITHUB_ENV"
+            disable_vars VALIDATE_SPELL_CODESPELL
           fi
         env:
+          INPUTS_VALIDATE_BIOME: ${{ inputs.validate-biome }}
+          INPUTS_VALIDATE_CSS: ${{ inputs.validate-css }}
           INPUTS_FILTER_REGEX_EXCLUDE: ${{ inputs.filter-regex-exclude }}
+          INPUTS_VALIDATE_SPELL_CODESPELL: ${{ inputs.validate-spell-codespell }}
 
       ################################
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: super-linter/super-linter/slim@v8.5.0
+        uses: super-linter/super-linter/slim@v8.6.0
         env:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
@@ -254,7 +271,7 @@ jobs:
       - name: Upload patch artifact
         # if super-linter failed and lint-fixes.patch exists
         if: ${{ failure() && steps.patch.outputs.changed == 'true' }}
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: lint-fixes
           path: lint-fixes.patch

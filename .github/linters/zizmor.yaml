@@ -1,6 +1,6 @@
 ---
 rules:
-  # disables the check - i.e. allows refering to version instead of an exact hash
+  # disables the check - i.e. allows referring to version instead of an exact hash
   unpinned-uses:
     config:
       policies:
