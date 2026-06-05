@@ -11,6 +11,10 @@ on:
 permissions:
   contents: read
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   # This is how to reuse this workflow:
   #  call-workflow:
@@ -31,11 +35,11 @@ jobs:
 
       # Fetch latest changes (even by previous job)
       - name: Fetch latest changes
-        run: git pull origin "${GITHUB_REF}"
-        shell: bash
+        if: ${{ !startsWith(github.ref, 'refs/pull/') }}
+        run: git pull --ff-only origin "${GITHUB_REF}"
         env:
           GITHUB_REF: ${{ github.ref }}
           #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check PHP syntax errors
-        uses: overtrue/phplint@10.0
+        uses: overtrue/phplint@9.7.2

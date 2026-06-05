@@ -19,6 +19,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [0.2.10] - 2026-06-06
+
+refactor: normalize fetch-latest
+
+### Added
+
+- Added `AGENTS.md` with repository instructions for agents.
+
+### Changed
+
+- DRYed reusable workflow shell defaults and normalized fetch-latest commands.
+- Ignored local `.tools/` installs used for workspace validation helpers.
+
 ## [0.2.9] - 2026-03-07
 
 feat: prevent any composer.json file be used by super-linter
@@ -177,7 +190,8 @@ feat: Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.9...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.10...HEAD
+[0.2.10]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.9...v0.2.10
 [0.2.9]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.8...v0.2.9
 [0.2.8]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.7...v0.2.8
 [0.2.7]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.6...v0.2.7
