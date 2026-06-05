@@ -6,7 +6,7 @@ This repository contains reusable GitHub Actions workflows for PHP projects. It 
 
 ## Change Rules
 
-- Keep existing comments. Remove a comment only when it is a TODO that was solved, or translate it to English when needed.
+- Keep existing comments. Remove a comment only when it is a todo that was solved, or translate it to English when needed.
 - Update `CHANGELOG.md` in English whenever behavior, documentation, or workflow maintenance changes.
 - Keep `README.md` examples in sync when workflow inputs or public behavior change.
 - Review workflow edits for security issues: prefer least-privilege `permissions`, avoid exposing secrets in logs, and be deliberate when keeping checkout credentials available.
