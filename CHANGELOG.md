@@ -15,7 +15,7 @@ ci: bump checkout and super-linter
 
 - Bump reusable workflow checkout steps to `actions/checkout@v7`.
 - Bump super-linter to `super-linter/super-linter/slim@v8.7.0`.
-- Format the lint-fixes artifact notice command with backticks.
+- Quote the lint-fixes artifact notice command so backticks remain literal.
 
 ### `Deprecated` for soon-to-be removed features
 
