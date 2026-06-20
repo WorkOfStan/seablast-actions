@@ -13,10 +13,6 @@ ci: bump checkout and super-linter
 
 ### `Changed` for changes in existing functionality
 
-- Bump reusable workflow checkout steps to `actions/checkout@v7`.
-- Bump super-linter to `super-linter/super-linter/slim@v8.7.0`.
-- Quote the lint-fixes artifact notice command so backticks remain literal.
-
 ### `Deprecated` for soon-to-be removed features
 
 ### `Removed` for now removed features
@@ -24,6 +20,15 @@ ci: bump checkout and super-linter
 ### `Fixed` for any bugfixes
 
 ### `Security` in case of vulnerabilities
+
+## [0.2.11] - 2026-06-20
+
+### Changed
+
+- Bump reusable workflow checkout steps to `actions/checkout@v7`.
+- Bump super-linter to `super-linter/super-linter/slim@v8.7.0`.
+- Escape the lint-fixes artifact notice command backticks so they remain literal.
+- Clarify README workflow conditions and deprecated PHPCBF compatibility wording.
 
 ## [0.2.10] - 2026-06-06
 
@@ -196,7 +201,8 @@ feat: Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.10...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.11...HEAD
+[0.2.11]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.10...v0.2.11
 [0.2.10]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.9...v0.2.10
 [0.2.9]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.8...v0.2.9
 [0.2.8]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.7...v0.2.8

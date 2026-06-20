@@ -25,7 +25,7 @@ but as this condition works **ONLY** on the default branch, and typically you ne
 there's the second way. Chaining jobs within a single workflow by using `needs` command.
 See <https://github.com/WorkOfStan/seablast-dist/blob/main/.github/workflows/polish-the-code.yml> for an actual example.
 
-## Test composer dependencies, PHPUnit tests (incl. database) and PHPStan check
+## Test Composer dependencies, optional database/PHPUnit, and PHPStan check
 
 ```yml
 jobs:
@@ -47,14 +47,14 @@ jobs:
       runs-on: "ubuntu-latest"
 ```
 
-PHPUnit tests fire up only if `conf/phpunit-github.xml` is present. (This configuration may be different from the usual `./phpunit.xml`.)
+The workflow checks PHP syntax for every selected PHP version and installs or restores Composer dependencies. Database migration runs only if the configured Phinx file is present and PHP >= 7.1. PHPUnit tests fire up only if `conf/phpunit-github.xml` is present and PHP >= 7.1. (This configuration may be different from the usual `./phpunit.xml`.) PHPStan runs only on PHP >= 7.2.
 
 ### Caching Mechanism
 
 To optimize execution time, the `vendor` folder is cached, allowing dependencies to be reused across workflow runs. The cache key is generated based on:
 
-- `composer.json` – to track dependency changes.
-- The runner's OS and PHP version – to account for environment-specific variations.
+- `composer.json` - to track dependency changes.
+- The runner's OS and PHP version - to account for environment-specific variations.
 
 This approach enables cache sharing across branches. However, if the code in the referenced branch (e.g., `dev`) changes, it's recommended to **invalidate the cache** to ensure a fresh `vendor` folder is built from scratch.
 
@@ -112,3 +112,4 @@ Note 6: You can either use your own zizmor.yaml or the GitHub Action auto-genera
 ## Automatic PHP Code Style improvements
 
 Use [PHPCS-Fix](https://github.com/WorkOfStan/phpcs-fix/blob/main/.github/workflows/phpcs-phpcbf.yml).
+The local `.github/workflows/phpcbf.yml` workflow is deprecated and kept only for backward compatibility.
