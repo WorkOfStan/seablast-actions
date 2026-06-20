@@ -7,9 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+ci: bump checkout and super-linter
+
 ### `Added` for new features
 
 ### `Changed` for changes in existing functionality
+
+- Bump reusable workflow checkout steps to `actions/checkout@v7`.
+- Bump super-linter to `super-linter/super-linter/slim@v8.7.0`.
+- Format the lint-fixes artifact notice command with backticks.
 
 ### `Deprecated` for soon-to-be removed features
 
