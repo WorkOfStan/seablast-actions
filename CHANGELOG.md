@@ -7,8 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-ci: bump checkout and super-linter
-
 ### `Added` for new features
 
 ### `Changed` for changes in existing functionality
@@ -23,11 +21,13 @@ ci: bump checkout and super-linter
 
 ## [0.2.11] - 2026-06-20
 
+ci: bump checkout and super-linter
+
 ### Changed
 
 - Bump reusable workflow checkout steps to `actions/checkout@v7`.
 - Bump super-linter to `super-linter/super-linter/slim@v8.7.0`.
-- Escape the lint-fixes artifact notice command backticks so they remain literal.
+- Show the lint-fixes apply command as plain annotation text and Markdown in the job summary.
 - Clarify README workflow conditions and deprecated PHPCBF compatibility wording.
 
 ## [0.2.10] - 2026-06-06

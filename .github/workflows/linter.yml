@@ -281,4 +281,8 @@ jobs:
 
       - name: Inform about patch artifact
         if: ${{ failure() && steps.patch.outputs.changed == 'true' && hashFiles('lint-fixes.patch') != '' }}
-        run: echo "::notice title=lint-fixes artifact ready::You can apply locally with \`git apply lint-fixes.patch\`"
+        run: |
+          echo "::notice title=lint-fixes artifact ready::You can apply locally with: git apply lint-fixes.patch"
+          echo "### lint-fixes artifact ready" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "You can apply locally with \`git apply lint-fixes.patch\`." >> "$GITHUB_STEP_SUMMARY"
