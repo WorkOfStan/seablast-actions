@@ -19,7 +19,7 @@ jobs:
         shell: bash
 
       - name: Checkout
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v7
         with:
           # safer: token not left in git config
           persist-credentials: false

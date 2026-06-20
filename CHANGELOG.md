@@ -19,6 +19,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [0.2.11] - 2026-06-20
+
+ci: bump checkout and super-linter
+
+### Changed
+
+- Bump reusable workflow checkout steps to `actions/checkout@v7`.
+- Bump super-linter to `super-linter/super-linter/slim@v8.7.0`.
+- Show the lint-fixes apply command as plain annotation text and Markdown in the job summary.
+- Clarify `README` workflow conditions and deprecated PHPCBF compatibility wording.
+
 ## [0.2.10] - 2026-06-06
 
 refactor: normalize fetch-latest
@@ -190,7 +201,8 @@ feat: Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.10...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.11...HEAD
+[0.2.11]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.10...v0.2.11
 [0.2.10]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.9...v0.2.10
 [0.2.9]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.8...v0.2.9
 [0.2.8]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.7...v0.2.8
