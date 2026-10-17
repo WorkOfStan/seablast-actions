@@ -19,6 +19,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [0.2.12] - 2026-10-17
+
+ci!: bump super-linter and cache
+
+### Changed
+
+- Bump Super-Linter to `super-linter/super-linter/slim@v9.0.0`.
+- Bump Composer dependency caching to `actions/cache@v6`.
+
+### Fixed
+
+- Restore PHPLint's stable `9.7.2` release instead of tracking the `9.8` development branch.
+- fix!: Grant Super-Linter permission to publish commit statuses and prevent GitHub API 403 errors caused by missing status-write access.
+  The calling job **MUST grant both `contents: read` and `statuses: write`** so Super-Linter can read the repository and publish commit statuses.
+
 ## [0.2.11] - 2026-06-20
 
 ci: bump checkout and super-linter
@@ -201,7 +216,8 @@ feat: Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.11...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.12...HEAD
+[0.2.12]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.11...v0.2.12
 [0.2.11]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.10...v0.2.11
 [0.2.10]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.9...v0.2.10
 [0.2.9]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.8...v0.2.9
