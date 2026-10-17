@@ -79,6 +79,9 @@ jobs:
   # Note: https://docs.github.com/en/actions/using-workflows/reusing-workflows The strategy property is not supported in any job that calls a reusable workflow.
   call-workflow:
     uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@main
+    permissions:
+      contents: read
+      statuses: write
     with:
       # OPTIONAL parameter for REGEX to exclude certain files, e.g. third-party code, from being linted
       filter-regex-exclude: ".*/assets/third-party/.*"
@@ -93,6 +96,8 @@ jobs:
       # OPTIONAL enable SPELL_CODESPELL validation. It treats words from other languages than English as typos. Creating ignore/allowlist is impractical. Use with caution.
       validate-spell-codespell: true
 ```
+
+The calling job must grant `contents: read` and `statuses: write` so Super-Linter can read the repository and publish commit statuses. Use a shared workflow revision containing the status-write permission fix; `v0.2.11` does not contain it. Reusable workflows cannot elevate the caller's token permissions.
 
 With the release of [Super-Linter](https://github.com/super-linter/super-linter) 7.0.0, [Prettier](https://prettier.io/) has become the standard for many file formats, ensuring consistent code styling across your projects.
 Embrace this change and keep your codebase looking sharp by integrating Prettier directly into your workflow: [prettier-fix](https://github.com/marketplace/actions/prettier-fix).
