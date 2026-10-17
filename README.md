@@ -97,7 +97,7 @@ jobs:
       validate-spell-codespell: true
 ```
 
-The calling job must grant `contents: read` and `statuses: write` so Super-Linter can read the repository and publish commit statuses. Use a shared workflow revision containing the status-write permission fix; `v0.2.11` does not contain it. Reusable workflows cannot elevate the caller's token permissions.
+The calling job MUST grant both `contents: read` and `statuses: write` so Super-Linter can read the repository and publish commit statuses. Use a shared workflow revision containing the status-write permission fix; `v0.2.11` does not contain it. Reusable workflows cannot elevate the caller's token permissions.
 
 With the release of [Super-Linter](https://github.com/super-linter/super-linter) 7.0.0, [Prettier](https://prettier.io/) has become the standard for many file formats, ensuring consistent code styling across your projects.
 Embrace this change and keep your codebase looking sharp by integrating Prettier directly into your workflow: [prettier-fix](https://github.com/marketplace/actions/prettier-fix).

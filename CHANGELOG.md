@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.12] - 2026-10-17
 
-ci: bump super-linter and cache
+ci!: bump super-linter and cache
 
 ### Changed
 
@@ -31,7 +31,8 @@ ci: bump super-linter and cache
 ### Fixed
 
 - Restore PHPLint's stable `9.7.2` release instead of tracking the `9.8` development branch.
-- Grant Super-Linter permission to publish commit statuses and prevent GitHub API 403 errors caused by missing status-write access.
+- fix!: Grant Super-Linter permission to publish commit statuses and prevent GitHub API 403 errors caused by missing status-write access.
+  The calling job MUST grant both `contents: read` and `statuses: write` so Super-Linter can read the repository and publish commit statuses.
 
 ## [0.2.11] - 2026-06-20
 
