@@ -121,7 +121,7 @@ jobs:
       - name: "MySQL db ${{ env.DB_DATABASE }}"
         if: steps.check_files_database.outputs.files_exists == 'true'
         run: |
-          sudo /etc/init.d/mysql start
+          sudo systemctl start mysql.service
           mysql -V
           mysql -e "STATUS" -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
           mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}

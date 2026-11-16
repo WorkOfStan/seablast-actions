@@ -34,7 +34,7 @@ jobs:
     uses: WorkOfStan/seablast-actions/.github/workflows/php-composer-dependencies-reusable.yml@main
     with:
       # REQUIRED (JSON string)
-      php-version: '["7.2", "7.3", "7.4"]'
+      php-version: '["7.2", "7.3", "7.4", "8.4"]'
       # OPTIONAL: path with the default database configuration
       phinx-config: "phinx.dist.yml"
       # OPTIONAL: path where the app expects the local database configuration

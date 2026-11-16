@@ -19,6 +19,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [0.2.13] - 2026-11-17
+
+fix: Start MySQL with `systemctl`
+
+### Changed
+
+- chore: Bump PHPLint from `overtrue/phplint@9.7.2` to `overtrue/phplint@9.8.2`.
+- fix: Start MySQL with `systemctl` using the documented command for GitHub-hosted Ubuntu runners. (As `sudo /etc/init.d/mysql start` stopped working for `Ubuntu 26.04` runner.)
+- docs: Update repository change rules for reusable workflows and remove irrelevant Windows shell, Composer, and Python test instructions.
+
 ## [0.2.12] - 2026-10-17
 
 ci!: bump super-linter and cache
@@ -216,7 +226,8 @@ feat: Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.12...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.13...HEAD
+[0.2.13]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.12...v0.2.13
 [0.2.12]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.11...v0.2.12
 [0.2.11]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.10...v0.2.11
 [0.2.10]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.9...v0.2.10
