@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.13] - 2026-11-17
 
-fix: Start MySQL with `systemctl`
+fix: Support MySQL 8.4 while preserving legacy PHP authentication
 
 ### Changed
 
