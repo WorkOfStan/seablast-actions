@@ -19,6 +19,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [0.2.13] - 2026-11-17
+
+fix: Support MySQL 8.4 while preserving legacy PHP authentication
+
+### Changed
+
+- chore: Bump PHPLint from `overtrue/phplint@9.7.2` to `overtrue/phplint@9.8.2`.
+- fix: Start MySQL with `systemctl` using the documented command for GitHub-hosted Ubuntu runners. (As `sudo /etc/init.d/mysql start` stopped working for `Ubuntu 26.04` runner.)
+- docs: Update repository change rules for reusable workflows and remove irrelevant Windows shell, Composer, and Python test instructions.
+- Batch PHP syntax checks on PHP 8.3+ while retaining per-file linting on older versions.
+
+### Fixed
+
+- Enable pipefail explicitly for PHP syntax checks so a failed find command fails the step on all supported PHP versions.
+- Skip the legacy MySQL authentication override on PHP 8+ to support MySQL 8.4 while preserving the override for older PHP versions.
+- Enable native authentication on MySQL 8.4 before applying the legacy PHP override, and preserve existing authentication for PHP 7.4.4+, thus PHP<7.4.4 are supported with MySQL 8.4 on `Ubuntu 26.04` runner.
+
 ## [0.2.12] - 2026-10-17
 
 ci!: bump super-linter and cache
@@ -216,7 +233,8 @@ feat: Proven reusable workflows
 
 - added .shfmt configuration for super-linter but VALIDATE_SHELL_SHFMT: false is the only solution, anyway
 
-[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.12...HEAD
+[Unreleased]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.13...HEAD
+[0.2.13]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.12...v0.2.13
 [0.2.12]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.11...v0.2.12
 [0.2.11]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.10...v0.2.11
 [0.2.10]: https://github.com/WorkOfStan/seablast-actions/compare/v0.2.9...v0.2.10

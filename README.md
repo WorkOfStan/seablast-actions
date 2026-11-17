@@ -1,4 +1,4 @@
-# seablast-actions
+# Seablast Actions
 
 This curated collection of prefabricated GitHub Actions is designed to supercharge your PHP projects with reusable workflows.
 Streamline your development process and ensure consistent build, test, and deployment practices across all your PHP applications.
@@ -34,7 +34,7 @@ jobs:
     uses: WorkOfStan/seablast-actions/.github/workflows/php-composer-dependencies-reusable.yml@main
     with:
       # REQUIRED (JSON string)
-      php-version: '["7.2", "7.3", "7.4"]'
+      php-version: '["7.2", "7.3", "7.4", "8.4"]'
       # OPTIONAL: path with the default database configuration
       phinx-config: "phinx.dist.yml"
       # OPTIONAL: path where the app expects the local database configuration
@@ -48,6 +48,8 @@ jobs:
 ```
 
 The workflow checks PHP syntax for every selected PHP version and installs or restores Composer dependencies. Database migration runs only if the configured Phinx file is present and PHP >= 7.1. PHPUnit tests fire up only if `conf/phpunit-github.xml` is present and PHP >= 7.1. (This configuration may be different from the usual `./phpunit.xml`.) PHPStan runs only on PHP >= 7.2.
+
+On PHP 7.4.4+, database setup keeps the runner's existing MySQL authentication method. Older PHP versions retain the `mysql_native_password` override. On GitHub-hosted Ubuntu runners with MySQL 8.4, the workflow enables that plugin in `/etc/mysql/conf.d/seablast-legacy-auth.cnf` and restarts MySQL before applying the override. MySQL 9+ removes the plugin and is not supported for these legacy PHP database jobs. PHP versions before 7.1.16 and PHP 7.2 before 7.2.4 also have MySQL authentication-handshake limitations; enabling the plugin alone does not guarantee compatibility for those releases.
 
 ### Caching Mechanism
 

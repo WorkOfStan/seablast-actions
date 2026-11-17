@@ -95,7 +95,15 @@ jobs:
 
       # Check syntax for the specific PHP version
       - name: Check PHP syntax ${{ steps.php_version.outputs.version }}
-        run: find ./ -name "*.php" -print0 | xargs -0 -n 1 php -l
+        run: |
+          set -o pipefail
+          if php -r 'exit(PHP_VERSION_ID >= 80300 ? 0 : 1);'; then
+            # PHP 8.3 and later support linting multiple files in one invocation.
+            find . -name '*.php' -type f -print0 | xargs -0 -r php -l
+          else
+            # PHP versions before 8.3 require one lint invocation per file.
+            find . -name '*.php' -type f -print0 | xargs -0 -r -n 1 php -l
+          fi
 
       # Database tests should fire up only if the specified Phinx config file is present
       - name: Check database config file existence
@@ -121,10 +129,21 @@ jobs:
       - name: "MySQL db ${{ env.DB_DATABASE }}"
         if: steps.check_files_database.outputs.files_exists == 'true'
         run: |
-          sudo /etc/init.d/mysql start
+          sudo systemctl start mysql.service
           mysql -V
           mysql -e "STATUS" -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
-          mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+          # Preserve legacy authentication for PHP versions before 7.4.4.
+          if php -r 'exit(PHP_VERSION_ID < 70404 ? 0 : 1);'; then
+            mysql_version=$(mysql -N -B -e 'SELECT VERSION();' -u"$DB_USER" -p"$DB_PASSWORD")
+            if [[ "$mysql_version" == 8.4.* ]]; then
+              # MySQL 8.4 disables the native authentication plugin by default, so enable it.
+              printf '%s\n' '[mysqld]' 'mysql_native_password=ON' \
+                | sudo tee /etc/mysql/conf.d/seablast-legacy-auth.cnf > /dev/null
+              sudo systemctl restart mysql.service
+            fi
+            mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" \
+              -u"$DB_USER" -p"$DB_PASSWORD"
+          fi
           mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
           mysql -e 'SHOW DATABASES;' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 

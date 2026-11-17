@@ -1,4 +1,4 @@
-# Repository Instructions
+# Seablast Actions - Repository Instructions
 
 ## Purpose
 
@@ -6,37 +6,12 @@ This repository contains reusable GitHub Actions workflows for PHP projects. It 
 
 ## Change Rules
 
-- Keep existing comments. Remove a comment only when it is a todo that was solved, or translate it to English when needed.
-- Update `CHANGELOG.md` in English whenever behavior, documentation, or workflow maintenance changes.
-- Keep `README.md` examples in sync when workflow inputs or public behavior change.
-- Review workflow edits for security issues: prefer least-privilege `permissions`, avoid exposing secrets in logs, and be deliberate when keeping checkout credentials available.
-
-## Windows Shell Usage
-
-On Windows, do not run `.sh` helper scripts directly from PowerShell. Use Git Bash explicitly, for example:
-
-```powershell
-& "C:\Program Files\Git\bin\bash.exe" -lc "./blast.sh phpstan"
-& "C:\Program Files\Git\bin\bash.exe" -lc "./blast.sh phpstan-remove"
-```
-
-## Composer
-
-When running Composer locally, use the repository cache directory:
-
-```powershell
-$env:COMPOSER_CACHE_DIR = "$PWD\.composer-cache"
-php "C:\ProgramData\ComposerSetup\bin\composer.phar" install
-```
-
-Do not modify Composer itself and do not run `composer self-update`.
-
-## Python Tests
-
-When running Python tests in this workspace, use:
-
-```powershell
-python -m pytest -q -p no:cacheprovider --basetemp=.tmp/pytest
-```
-
-Do not load pytest's cache plugin. Do not inspect, lint, or recurse into `.tmp`, `.pytest-tmp`, `.pytest_cache`, `.venv`, or build artifacts. If pytest temp cleanup fails on Windows, remove only `.tmp/pytest` and rerun tests serially.
+- Keep existing comments. Remove a comment only when it is a TODO that was solved, or translate it to English when needed.
+- Update `CHANGELOG.md` in English whenever behavior, documentation, or workflow maintenance changes. Start each entry with a present-tense verb and append it to the relevant section under `Unreleased` unless a release is being prepared.
+- Keep `README.md` examples and workflow usage comments in sync when inputs, defaults, required caller permissions, or public behavior change. Put explanations next to the relevant workflow documentation.
+- Preserve compatibility for repositories calling these workflows. Document breaking changes and retain deprecated workflows unless their removal is explicitly requested.
+- Review workflow edits for security issues: use the minimum required `permissions`, avoid exposing secrets in logs, and keep checkout credentials available only when later steps need them.
+- Pass untrusted values to shell steps through environment variables and quote their expansions instead of interpolating GitHub expressions directly into shell commands.
+- Keep workflow shell settings explicit and consistent with the commands being run.
+- Validate changed YAML and embedded shell commands with available tooling, and check documentation against the workflow definitions. Report which checks ran and any validation limits; local checks do not establish that a reusable workflow succeeds in a caller repository.
+- Do not install application dependencies or run PHP/Python application test suites for this repository; those belong to the consuming projects. Use checks relevant to the files changed here.
