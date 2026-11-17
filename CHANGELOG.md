@@ -28,6 +28,11 @@ fix: Start MySQL with `systemctl`
 - chore: Bump PHPLint from `overtrue/phplint@9.7.2` to `overtrue/phplint@9.8.2`.
 - fix: Start MySQL with `systemctl` using the documented command for GitHub-hosted Ubuntu runners. (As `sudo /etc/init.d/mysql start` stopped working for `Ubuntu 26.04` runner.)
 - docs: Update repository change rules for reusable workflows and remove irrelevant Windows shell, Composer, and Python test instructions.
+- Batch PHP syntax checks on PHP 8.3+ while retaining per-file linting on older versions.
+
+### Fixed
+
+- Enable pipefail explicitly for PHP syntax checks so a failed find command fails the step on all supported PHP versions.
 
 ## [0.2.12] - 2026-10-17
 

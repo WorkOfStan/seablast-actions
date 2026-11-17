@@ -95,7 +95,15 @@ jobs:
 
       # Check syntax for the specific PHP version
       - name: Check PHP syntax ${{ steps.php_version.outputs.version }}
-        run: find ./ -name "*.php" -print0 | xargs -0 -n 1 php -l
+        run: |
+          set -o pipefail
+          if php -r 'exit(PHP_VERSION_ID >= 80300 ? 0 : 1);'; then
+            # PHP 8.3 and later support linting multiple files in one invocation.
+            find . -name '*.php' -type f -print0 | xargs -0 -r php -l
+          else
+            # PHP versions before 8.3 require one lint invocation per file.
+            find . -name '*.php' -type f -print0 | xargs -0 -r -n 1 php -l
+          fi
 
       # Database tests should fire up only if the specified Phinx config file is present
       - name: Check database config file existence
