@@ -34,6 +34,7 @@ fix: Start MySQL with `systemctl`
 
 - Enable pipefail explicitly for PHP syntax checks so a failed find command fails the step on all supported PHP versions.
 - Skip the legacy MySQL authentication override on PHP 8+ to support MySQL 8.4 while preserving the override for older PHP versions.
+- Enable native authentication on MySQL 8.4 before applying the legacy PHP override, and preserve existing authentication for PHP 7.4.4+, thus PHP<7.4.4 are supported with MySQL 8.4 on `Ubuntu 26.04` runner.
 
 ## [0.2.12] - 2026-10-17
 
