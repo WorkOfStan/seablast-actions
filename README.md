@@ -49,6 +49,8 @@ jobs:
 
 The workflow checks PHP syntax for every selected PHP version and installs or restores Composer dependencies. Database migration runs only if the configured Phinx file is present and PHP >= 7.1. PHPUnit tests fire up only if `conf/phpunit-github.xml` is present and PHP >= 7.1. (This configuration may be different from the usual `./phpunit.xml`.) PHPStan runs only on PHP >= 7.2.
 
+On PHP 8+, database setup keeps the runner's existing MySQL authentication method. Older PHP versions retain the `mysql_native_password` override and require a MySQL configuration with that plugin enabled; MySQL 8.4 disables it by default.
+
 ### Caching Mechanism
 
 To optimize execution time, the `vendor` folder is cached, allowing dependencies to be reused across workflow runs. The cache key is generated based on:

@@ -132,7 +132,11 @@ jobs:
           sudo systemctl start mysql.service
           mysql -V
           mysql -e "STATUS" -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
-          mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+          # Preserve legacy authentication for PHP versions before 8.0.
+          if php -r 'exit(PHP_VERSION_ID < 80000 ? 0 : 1);'; then
+            mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" \
+              -u"$DB_USER" -p"$DB_PASSWORD"
+          fi
           mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
           mysql -e 'SHOW DATABASES;' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
